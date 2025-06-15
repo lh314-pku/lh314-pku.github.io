@@ -21,7 +21,7 @@ function generateCourseList() {
   // 添加一个 "回到主页" 功能到课程目录顶部
   const homeDiv = document.createElement("div");
   homeDiv.className = "course";
-  homeDiv.textContent = "🏠 主页";
+  homeDiv.textContent = "主页";
   homeDiv.style.cursor = "pointer"; // 鼠标指针样式
   homeDiv.style.fontWeight = "bold"; // 突出显示
   // 点击 "主页" 显示 README.md
