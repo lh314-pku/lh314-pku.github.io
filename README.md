@@ -14,4 +14,4 @@
 ## 大一下_2025春
 [人工智能引论](https://lh314-pku.github.io/notes/IntroOfAI_2025Spring/index)
 
-程序设计实习
+[程序设计实习](https://lh314-pku.github.io/notes/Programming_Internship/index)
