@@ -6,6 +6,8 @@ body {
 }
 
 .container {
+    display: grid;
+    grid-template-columns: minmax(300px, 1fr) 2fr;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
