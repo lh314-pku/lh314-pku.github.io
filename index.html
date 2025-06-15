@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课程笔记平台</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+    #sidebar {
+      width: 20%;
+      background-color: #f4f4f4;
+      padding: 10px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+    }
+    #main-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .course, .chapter {
+      margin: 5px 0;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .course:hover, .chapter:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <h3>课程目录</h3>
+    <!-- 课程结构会根据你的内容动态生成 -->
+    <div id="course-list">
+      <!-- 课程和章节会填充在这里 -->
+    </div>
+  </div>
+  <div id="main-content">
+    <h3>笔记内容</h3>
+    <div id="markdown-content">
+      <!-- 显示 Markdown 笔记内容 -->
+      请选择一个章节以查看笔记。
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
