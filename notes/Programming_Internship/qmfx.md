@@ -1,10 +1,10 @@
 [TOC]
 
-[Part01](# Part01)
+[Part01](#1)
 
-###### TOP
+###### <a id="TOP">TOP</a>
 
-# Part01
+# <a id="1">Part01</a>
 
 python中重视缩进，需要一致的缩进，类似于c++的分号。
 
@@ -209,6 +209,6 @@ python默认源程序为 utf8 编码，.py文件应该有开头的 BOM 标志。
 
 若要运行 GBK 编码的源程序，需要在开头加`# -*- coding: GBK -*-`。
 
-[BACK](###### TOP)
+[BACK](#TOP)
 
 # Part 02
