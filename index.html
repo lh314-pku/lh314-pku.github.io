@@ -1,55 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>课程笔记平台</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
-    }
-    #sidebar {
-      width: 20%;
-      background-color: #f4f4f4;
-      padding: 10px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-      overflow-y: auto;
-    }
-    #main-content {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .course, .chapter {
-      margin: 5px 0;
-      cursor: pointer;
-      padding: 5px;
-    }
-    .course:hover, .chapter:hover {
-      background-color: #ddd;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的笔记</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        #sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        #sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        #main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .home-button {
+            margin-bottom: 10px;
+        }
+        .toggle-sidebar {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div id="sidebar">
-    <h3>课程目录</h3>
-    <!-- 课程结构会根据你的内容动态生成 -->
-    <div id="course-list">
-      <!-- 课程和章节会填充在这里 -->
+    <div id="sidebar">
+        <button class="toggle-sidebar" onclick="toggleSidebar()">隐藏侧边栏</button>
+        <button class="home-button" onclick="loadHome()">主页</button>
+        <ul id="course-list">
+            <!-- 课程列表将通过JavaScript动态生成 -->
+        </ul>
     </div>
-  </div>
-  <div id="main-content">
-    <h3>笔记内容</h3>
-    <div id="markdown-content">
-      <!-- 显示 Markdown 笔记内容 -->
-      请选择一个章节以查看笔记。
+    <div id="main-content">
+        <div id="markdown-content"></div>
     </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
