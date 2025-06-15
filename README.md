@@ -1,33 +1,9 @@
 <!-- 侧边栏HTML代码 -->
-<div class="sidebar">
-  <nav>
-    <ul>
-      <li><a href="#introduction">介绍</a></li>
-      <li><a href="#install">安装</a></li>
-      <li><a href="#configuration">配置</a></li>
-      <!-- 更多链接 -->
-    </ul>
-  </nav>
 
-  <div class="profile">
-    <img src="profile.jpg" alt="姓名">
-    <h3>姓名</h3>
-    <p>简介文字...</p>
-  </div>
-
-  <div class="social">
-    <a href="https://twitter.com/username"><img src="twitter.png" alt="Twitter"></a>
-    <a href="https://www.linkedin.com/in/username"><img src="linkedin.png" alt="LinkedIn"></a>
-    <!-- 更多社交媒体链接 -->
-  </div>
-
-  <div class="ad">
-    <a href="http://www.advertiser.com"><img src="ad.jpg" alt="广告"></a>
-  </div>
-</div>
 
 <!-- 正文内容 -->
 # Notes
+[toc]
 如你所见，这个网页算是重新创建的一个学习主页，用来存储我的各种笔记和课程资料。
 
 由于某些不可抗因素，本人的个人主页是从[该仓库](https://github.com/academicpages/academicpages.github.io)分支出来的，理论上应该算学术主页。而之所以想到自己从头搭建这样一个仓库，一方面是为了让我的markdown笔记（们）可以更加方便~~走到哪看到哪~~。
