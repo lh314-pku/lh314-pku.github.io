@@ -3,7 +3,7 @@
 // 假设我们有这样的课程结构
 const courses = {
   "课程 1": {
-    "章节 1.1": "notes/course1/chapter1.md",
+    "章节 1.1": "notes/IntroOfAI_2025Spring/Chapter1.md",
     "章节 1.2": "notes/course1/chapter2.md",
   },
   "课程 2": {
