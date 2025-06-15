@@ -1,8 +1,8 @@
-[TOC]
+###### <a id="TOP">目录</a>
 
 [Part01](#1)
 
-###### <a id="TOP">TOP</a>
+[Part02](#2)
 
 # <a id="1">Part01</a>
 
@@ -211,4 +211,54 @@ python默认源程序为 utf8 编码，.py文件应该有开头的 BOM 标志。
 
 [BACK](#TOP)
 
-# Part 02
+# <a id="2">Part 02</a>
+
+#### 一）split 函数
+
+`x.split()`的值是一个列表，包含字符串 x 经空格、制表符、换行符分隔得到的所有子串。
+
+也应该区分`x.split()`和`x.split('\t')`等结果。
+
+#### 二）lambda 表达式
+
+形式：`lambda arguments: expression`其中参数可以缺省。例如：
+
+```python
+k = lambda x, y: x + y
+print(k(4,5)) # >>> 9
+```
+
+#### 三）元组tuple
+
+#### 四）列表list
+
+#### 五）字典dict
+
+#### 六）集合set
+
+#### 七）函数
+
+#### 八）Python内置函数、退出程序和跨文件
+
+python内置函数，包括：基本类型转换函数（见上）、`max/min`函数、`print`函数等。
+
+退出程序：`exit()`。
+
+跨文件：
+
+```python
+# t.py
+def hello()
+    print('Hello from t')
+haha = "ok"
+```
+
+```python
+# a.py
+from t import hello, haha
+# or: from t import *
+hello()                # >>> Hello from t
+print(f'haha = {haha}')# >>> ok
+```
+
+[BACK](#TOP)
