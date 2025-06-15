@@ -62,6 +62,10 @@ function loadMarkdown(path) {
       markdownContent.innerHTML = `<p style="color: red;">加载 Markdown 文件失败: ${error.message}</p>`;
     });
 }
-
+// 初始化页面时，加载 README.md 并显示
+function loadInitialContent() {
+  loadMarkdown("README.md"); // 假设 README.md 位于项目根目录
+}
 // 初始化页面
 generateCourseList();
+loadInitialContent();
