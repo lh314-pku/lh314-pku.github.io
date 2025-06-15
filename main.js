@@ -18,6 +18,18 @@ const markdownContent = document.getElementById("markdown-content");
 
 // 根据课程结构生成左侧栏动态内容
 function generateCourseList() {
+  // 添加一个 "回到主页" 功能到课程目录顶部
+  const homeDiv = document.createElement("div");
+  homeDiv.className = "course";
+  homeDiv.textContent = "🏠 主页";
+  homeDiv.style.cursor = "pointer"; // 鼠标指针样式
+  homeDiv.style.fontWeight = "bold"; // 突出显示
+  // 点击 "主页" 显示 README.md
+  homeDiv.onclick = () => {
+    loadMarkdown("README.md");
+  };
+  courseList.appendChild(homeDiv); // 添加到课程列表
+  
   for (const courseName in courses) {
     const courseDiv = document.createElement("div");
     courseDiv.className = "course";
