@@ -9,16 +9,24 @@
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
-            <h3>Courses</h3>
-            <a href="#" data-course="IntroOfAI_2025Spring" class="course-link">Intro to AI 2025 Spring</a>
-            <a href="#" data-course="Programming_Internship" class="course-link">Programming Internship</a>
-        </div>
         <div class="content">
-            <h1>Welcome to My Notes</h1>
-            <p>Select a course from the sidebar to view its chapters.</p>
+            <h1>Loading README.md...</h1>
+            <div id="markdown-content"></div>
         </div>
     </div>
-    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load the README.md file
+            fetch('README.md')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('markdown-content').innerHTML = marked.parse(data);
+                })
+                .catch(error => {
+                    console.error('Error loading README.md:', error);
+                    document.getElementById('markdown-content').innerHTML = '<p>Failed to load README.md</p>';
+                });
+        });
+    </script>
 </body>
 </html>
