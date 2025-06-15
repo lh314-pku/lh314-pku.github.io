@@ -1,73 +1,47 @@
-// 全局变量，存储课程和章节信息
-let courses = [
-    { name: "课程1", path: "notes/course1.md", chapters: ["chapter1.md", "chapter2.md"] },
-    { name: "课程2", path: "notes/course2.md", chapters: ["chapter1.md", "chapter2.md"] }
-];
+// 主题切换
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    themeToggle.textContent = document.body.classList.contains('dark-theme') ? 
+        '切换浅色模式' : '切换深色模式';
+});
 
-// 加载主页
-function loadHome() {
-    loadMarkdown('README.md');
-    document.getElementById('sidebar').classList.remove('hidden');
-    renderCourseList();
-}
-
-// 加载课程或章节
-function loadCourse(course) {
-    loadMarkdown(course.path);
-    document.getElementById('sidebar').classList.remove('hidden');
-    renderChapterList(course);
-}
-
-// 加载Markdown文件并渲染到主内容区域
-function loadMarkdown(filePath) {
-    fetch(filePath)
-        .then(response => response.text())
-        .then(data => {
-            const markdownContent = document.getElementById('markdown-content');
-            markdownContent.innerHTML = marked(data);
+// 加载并渲染README.md
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('README.md');
+        if (!response.ok) throw new Error('README.md 加载失败');
+        
+        const markdown = await response.text();
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = marked.parse(markdown);
+        
+        // 为课程链接添加点击处理
+        document.querySelectorAll('a').forEach(link => {
+            if (link.href.includes('notes')) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const courseName = this.closest('li').dataset.course;
+                    window.location.href = `course.html?course=${encodeURIComponent(courseName)}`;
+                });
+            }
         });
-}
-
-// 渲染课程列表
-function renderCourseList() {
-    const courseList = document.getElementById('course-list');
-    courseList.innerHTML = '';
-    courses.forEach(course => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('button');
-        link.textContent = course.name;
-        link.onclick = () => loadCourse(course);
-        listItem.appendChild(link);
-        courseList.appendChild(listItem);
-    });
-}
-
-// 渲染章节列表
-function renderChapterList(course) {
-    const courseList = document.getElementById('course-list');
-    courseList.innerHTML = '';
-    const homeButton = document.createElement('button');
-    homeButton.textContent = '返回主页';
-    homeButton.onclick = loadHome;
-    courseList.appendChild(homeButton);
-
-    course.chapters.forEach(chapter => {
-        const listItem = document.createElement('li');
-        const link = document.createElement('button');
-        link.textContent = chapter;
-        link.onclick = () => loadMarkdown(`notes/${chapter}`);
-        listItem.appendChild(link);
-        courseList.appendChild(listItem);
-    });
-}
-
-// 切换侧边栏显示
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('hidden');
-}
-
-// 初始化页面
-window.onload = () => {
-    loadHome();
-};
+        
+        if (window.location.search) {
+            const params = new URLSearchParams(window.location.search);
+            const message = params.get('message');
+            if (message) {
+                alert(message);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading README.md', error);
+        document.getElementById('content').innerHTML = `
+            <div class="error">
+                <h2>无法加载内容</h2>
+                <p>${error.message}</p>
+                <a href="index.html">返回首页</a>
+            </div>
+        `;
+    }
+});
