@@ -6,38 +6,16 @@ body {
 }
 
 .container {
-    display: flex;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.sidebar {
-    width: 200px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-right: 20px;
-}
-
 .content {
-    flex: 1;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.course-link {
-    display: block;
-    margin-bottom: 10px;
-    text-decoration: none;
-    color: #333;
-}
-
-.course-link:hover {
-    color: #666;
 }
 
 a {
