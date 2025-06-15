@@ -10,6 +10,6 @@
 个人主页详见[这里](https://lh314-pku.github.io/LeeStars/)
 
 ## 大一下_2025春
-人工智能引论
+[人工智能引论](notes/IntroOfAI_2025Spring/Chapter1.md)
 
 程序设计实习
