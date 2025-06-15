@@ -1,47 +1,72 @@
-// 主题切换
-const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-    themeToggle.textContent = document.body.classList.contains('dark-theme') ? 
-        '切换浅色模式' : '切换深色模式';
-});
+document.addEventListener('DOMContentLoaded', function() {
+    // Load the initial README.md file
+    fetch('README.md')
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('.content').innerHTML = marked.parse(data);
+        })
+        .catch(error => {
+            console.error('Error loading README.md:', error);
+            document.querySelector('.content').innerHTML = '<p>Failed to load README.md</p>';
+        });
 
-// 加载并渲染README.md
-window.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const response = await fetch('README.md');
-        if (!response.ok) throw new Error('README.md 加载失败');
-        
-        const markdown = await response.text();
-        const contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = marked.parse(markdown);
-        
-        // 为课程链接添加点击处理
-        document.querySelectorAll('a').forEach(link => {
-            if (link.href.includes('notes')) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const courseName = this.closest('li').dataset.course;
-                    window.location.href = `course.html?course=${encodeURIComponent(courseName)}`;
-                });
-            }
+    // Handle course selection
+    const courseLinks = document.querySelectorAll('.course-link');
+    courseLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const courseName = this.getAttribute('data-course');
+            loadCourse(courseName);
+        });
+    });
+
+    // Load course content
+    function loadCourse(courseName) {
+        // Update sidebar links
+        document.querySelector('.sidebar h3').textContent = courseName;
+        document.querySelectorAll('.course-link').forEach(link => {
+            link.style.display = 'none';
         });
         
-        if (window.location.search) {
-            const params = new URLSearchParams(window.location.search);
-            const message = params.get('message');
-            if (message) {
-                alert(message);
-            }
-        }
-    } catch (error) {
-        console.error('Error loading README.md', error);
-        document.getElementById('content').innerHTML = `
-            <div class="error">
-                <h2>无法加载内容</h2>
-                <p>${error.message}</p>
-                <a href="index.html">返回首页</a>
-            </div>
-        `;
+        // Add back button
+        const backButton = document.createElement('a');
+        backButton.href = '#';
+        backButton.className = 'course-link';
+        backButton.textContent = 'Back to Main';
+        backButton.style.display = 'block';
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            location.reload();
+        });
+        document.querySelector('.sidebar').prepend(backButton);
+        
+        // Load course index.md
+        fetch(`${courseName}/index.md`)
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('.content').innerHTML = marked.parse(data);
+                
+                // Make chapter links clickable
+                const chapterLinks = document.querySelectorAll('.content a');
+                chapterLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const chapterPath = this.getAttribute('href');
+                        fetch(`${courseName}/${chapterPath}`)
+                            .then(res => res.text())
+                            .then(chapterData => {
+                                document.querySelector('.content').innerHTML = marked.parse(chapterData);
+                            })
+                            .catch(error => {
+                                console.error('Error loading chapter file:', error);
+                                document.querySelector('.content').innerHTML = `<p>Failed to load chapter file</p>`;
+                            });
+                    });
+                });
+            })
+            .catch(error => {
+                console.error(`Error loading ${courseName}/index.md:`, error);
+                document.querySelector('.content').innerHTML = `<p>Failed to load ${courseName}/index.md</p>`;
+            });
     }
 });
