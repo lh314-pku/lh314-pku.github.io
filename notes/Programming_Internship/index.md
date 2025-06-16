@@ -5,4 +5,5 @@
 下面是我们期末 **(Python)** 的复习笔记。
 
 ---
-[复习笔记（Python）](https://lh314-pku.github.io/notes/Programming_Internship/qmfx)
+
+[复习笔记（Python基础）](https://lh314-pku.github.io/notes/Programming_Internship/qmfx1)
