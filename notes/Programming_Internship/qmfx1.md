@@ -1,6 +1,6 @@
 ###### <a id="TOP">目录</a>
 
-[Part01](#1)……[Part02](#2)……[Part03](#3)
+[Part01](#1)……[Part02](#2)……[Part03](#3)……[Part04](#4)
 
 # <a id="1">Part01</a>
 
@@ -568,8 +568,6 @@ while True:
 
 迭代器的实现可以在类内实现，也可以单独实现迭代器类：
 
-<!-- >>> -->
-
 ```python
 class MyRange:
     def __init__(self, n):
@@ -584,8 +582,6 @@ class MyRange:
             return val
         raise StopIteration()
 ```
-
-<!-- --- -->
 
 ```python
 class MyRange:
@@ -608,9 +604,67 @@ class MyRangeIteration:
             raise StopIteration
 ```
 
-<!-- <<< -->
-
 #### 生成器(Generator)
+
+生成器：一种延时求值对象，内部包含计算过程，真正需要时才完成计算。
+
+```python
+a = (i * i for i in range(5))
+print(a) #  <generator object <genexpr> at 0x02436C38>
+for x in a:
+    print(x, end=" ")
+# >>> 0 1 4 9 16
+```
+
+```python
+matrix = ((i*3+j for j in range(3)) for i in range(3))
+# matrix 是一个以生成器为元素的生成器
+for x in matrix:
+    for y in x:
+        print(y, end=" ")
+# >>> 0 1 2 3 4 5 6 7 8
+```
+
+yield语句：将所在函数变成一个生成器，调用时不会立刻执行，而是以yield作为“断点”，遇到yield就暂停，并且返回（抛出）yield所在行的值。（byd这么个破玩意搞这么难懂 ，[参考]([python中yield的用法详解——最简单，最清晰的解释_yield python-CSDN博客](https://blog.csdn.net/mieleizhi0522/article/details/82142856))）
+
+注：没有执行`next`或`send(None)`前，不能`send(x)`(x非None)
+
+可以用`next()`或for循环逐步进行，也可以通过`send(x)`传入参数。下举两例：
+
+```python
+def foo():
+    print("starting...")
+    while True:
+        res = yield 4
+        print("res:",res)
+g = foo()
+print(next(g)) # >>> staarting... >>> 4
+print("*"*20)  # >>> ********************
+print(next(g)) # >>> res: None    >>> 4
+```
+
+```python
+# 实现斐波那契数列
+def fibonacci(n):  # 生成器函数 - 用于求斐波那契数列前 n 项
+    a, b, counter = 0, 1, 0
+    while counter <= n:
+        yield a
+        a, b = b, a + b
+        counter += 1
+
+f = fibonacci(10)  # f 是一个迭代器，由生成器返回生成
+while True:
+    try:
+        print(next(f), end=" ")
+    except StopIteration:
+        break
+```
+
+┬─┬ ノ('-'ノ)想要更多案例……自己去看课件(╯°Д°)╯︵ ┻━┻（反正我看不出来这东西有什么用）
+
+[BACK](#TOP)
+
+# <a id="4">Part04</a>
 
 [BACK](#TOP)
 
