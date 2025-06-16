@@ -230,7 +230,152 @@ print(k(4,5)) # >>> 9
 
 #### 三）元组tuple
 
+元组由数个逗号分隔的值组成，前后可加括号。
+
+元组的元素引用不可改变，但是元素本身（例如列表等）可以修改。
+
+```python
+empty = ()    # 空元组
+a = ‘hello',  # 单元素元组，注意加逗号
+b = ('hello',)# 同上，不加逗号则为字符串
+```
+
+可以通过下标访问元组`x[a]`，也可以类似字符串进行分隔`x[a:b]`。
+
+可以通过`+`拼接元组，通过`*`构造重复元组。（完全和字符串一样啊喂）
+
+比大小？逐项相比。如果其一为另一的前缀，则较短者小。
+
+元组不可以使用`sort`函数排序（引用不可修改），只能通过`sorted`函数获得排序后结果。
+
+```python
+print((1,'ok') < (2, 'a', 'ok'))    # >>>True
+print((1,'ok') < (1, 'ok', 56))     # >>>True
+print((1,'ok', 199) < (1, 'ok', 56))# >>>False
+```
+
 #### 四）列表list
+
+列表可以有 0 到任意多个元素，元素可以通过下标访问。
+
+可以使用`in`判断列表是否包含某个元素。
+
+列表同样可以类似于元组和字符串进行切片`x[a:b]`，返回新的列表。
+
+列表的元素是可以修改的，可以直接在原列表上修改。
+
+对于列表来说，`+=`和`+`是不同的。前者是在原地添加，后者则创建了新的列表。
+
+```python
+a = [1,2,3,4]
+b = a    # a 和 b 是同一列表
+c = a[:] # c 和 a 不是同一列表，c 是 a 的拷贝
+a[0] = 5 # [5,2,3,4]
+b += [10]# [5,2,3,4,10]
+print(c) # >>> [1,2,3,4]
+```
+
+拷贝的实质是将每个元素的引用重复构建了一遍，并非同一个列表。
+
+对于拷贝来说，原始列表的变化也会反映到拷贝列表上，例如：
+
+```python
+a = [1, [2]]
+b = a[:]
+b.append(4)   
+# b = [1, [2], 4], a = [1, [2]]
+a[1].append(3)
+# b = [1, [2, 3], 4], a = [1, [2, 3]]
+```
+
+若想两者完全独立，需要**深拷贝**：
+
+```python
+import copy
+a = [1, [2]]
+b = copy.deepcopy(a)
+b.append(4)   
+# b = [1, [2], 4], a = [1, [2]]
+a[1].append(3)
+# b = [1, [2], 4], a = [1, [2, 3]]
+```
+
+**列表生成式**：通过表达式和for循环创建列表（可以加入筛选）：
+
+```python
+[x * x for x in range(1, 11)]
+#[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+[x * x for x in range(1, 11) if x % 2 == 0]
+#[4, 16, 36, 64, 100]
+[m + n for m in 'ABC' for n in 'XYZ']
+#['AX', 'AY', 'AZ', 'BX', 'BY', 'BZ', 'CX', 'CY', 'CZ']
+L = ['Hello', 'World', 18, 'Apple', None]
+[s for s in L if isinstance(s, int)]
+#[18]
+```
+
+**相关函数**：
+
+| 函数                            | 功能                     |
+| ----------------------------- | ---------------------- |
+| `append(value)`               | 在列表末尾加入元素              |
+| `extend(list)`                | 添加其他列表的元素              |
+| `insert(index, velue)`        | 插入元素                   |
+| `remove(value)`               | 删除元素                   |
+| `reverse()`                   | 反向                     |
+| `index(value[, start[,end]])` | 查询（第一处）索引              |
+| `len(x)`                      | 返回列表长度                 |
+| `max(list)`、`min(list)`       | 返回列表中的最大、最小值           |
+| `list(seq)`                   | 元组转列表（反向用`tuple(seq)`） |
+| `count(value)`                | 某元素出现次数                |
+| `pop([index = -1])`           | 从末尾删除元素                |
+
+`map(function, sequence)`：将一个列表（元组）映射到另一个列表（元组）。
+
+```python
+def abc(a,b,c):
+    return a * 100 + b * 10 + c
+l1 = [1,2,3]
+l2 = [4,5,6]
+l3 = [7,8,9]
+x = list(map(abc, l1, l2, l3))
+print(x) # >>> [147, 258, 369]
+```
+
+`filter(function, sequence)`：按照所定义的函数过滤掉列表（元组）中的一些元素。
+
+`reduce(function, iterable[, initializer])`：将一个列表按某个函数累积起来。
+
+```python
+from functools import reduce
+def f(x, y):
+    return x+y
+l = [1, 2, 3, 4, 5]
+print(reduce(f, l))    # >>> 15
+print(reduce(f, l, 10))# >>> 25
+```
+
+比大小逻辑同元组。列表支持`sort`和`sorted`。`sort`函数接受一个比较函数/过滤器，以关键字参数`key`的形式给出，可以传入函数和 lambda 表达式。
+
+```python
+def myKey(x):
+    rturn x % 10
+a = [25,7,16,33,4,1,2]
+a.sort(key = myKey)   # >>> [1,2,33,4,25,16,7]
+sorted("This is a test string from Andrew".split(), key = str.lower)
+# >>> ['a', 'Andrew', 'from', 'is', 'string', 'test', 'This']
+# 不区分大小写排序
+```
+
+```python
+from operator import *
+students = [('John', 'A', 15), ('Mike', 'B', 12),
+            ('Mike', 'C', 18), ('Bom', 'D', 10)]
+students.sort(key = lambda x : x[2])    # 按年龄排序
+sorted(students, key = itemgetter(0, 1))# 先按姓名后按成绩排序
+students.sort(key = lambda x : x[1], reverse = True)
+# 按成绩从大到小排序
+```
 
 #### 五）字典dict
 
