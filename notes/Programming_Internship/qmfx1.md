@@ -484,3 +484,9 @@ print(f'haha = {haha}')# >>> ok
 # <a id="3">Part03</a>
 
 [BACK](#TOP)
+
+---
+
+tmd不想施工了
+
+烦死了
