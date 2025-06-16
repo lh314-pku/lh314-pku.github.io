@@ -541,7 +541,76 @@ print(isinstance(b, B)) # >>> True
 
 #### 函数式程序设计
 
+- 函数可以作为变量
 
+- 函数可以作为函数的参数
+
+- lambda 表达式可以作为函数的参数和返回值
+
+#### 迭代器(Iteration)
+
+可迭代对象：可以用`for i in x:`形式遍历的对象，必须实现迭代器协议，即实现：
+
+- `__iter__()`：返回对象本身（迭代器）
+
+- `__next__()`：返回下一个元素
+
+```python
+x = [1,2,3,4]
+it = iter(x)
+while True:
+    try:
+        print(next(it))
+    except StopIteration:
+        break
+# >>> 1 2 3 4 (注意分行)
+```
+
+迭代器的实现可以在类内实现，也可以单独实现迭代器类：
+
+<!-- >>> -->
+
+```python
+class MyRange:
+    def __init__(self, n):
+        self.idx = 0
+        self.n = n
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.idx < self.n:
+            val = self.idx
+            self.idx += 1
+            return val
+        raise StopIteration()
+```
+
+<!-- --- -->
+
+```python
+class MyRange:
+    def __init__(self, n):
+        self.n = n
+    def __iter__(self):
+        return MyRangeIteration(self.n)
+class MyRangeIteration:
+    def __init__(self, n):
+        self.i = 0
+        self.n = n
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.i < self.n:
+            i = self.i
+            self.i += 1
+            return i
+        else:
+            raise StopIteration
+```
+
+<!-- <<< -->
+
+#### 生成器(Generator)
 
 [BACK](#TOP)
 
