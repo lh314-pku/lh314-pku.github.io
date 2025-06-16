@@ -1,8 +1,6 @@
 ###### <a id="TOP">目录</a>
 
-[Part01](#1)
-
-[Part02](#2)
+[Part01](#1)……[Part02](#2)……[Part03](#3)
 
 # <a id="1">Part01</a>
 
@@ -413,23 +411,50 @@ d2 = dict(name='Gumby', age=42)
 
 集合也可以进行快速查找，查找平均复杂度为`O(1)`。
 
-| 函数          | 功能  |
-| ----------- | --- |
-| s.add(x)    |     |
-| s.update(x) |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
-|             |     |
+| 函数                          | 功能                |
+| --------------------------- | ----------------- |
+| `s.add(x)`                  | 添加x到s中            |
+| `s.update(x)`               | 将集合/列表/元组/字典等x并入s |
+| `s.discard(x)`              | 从s中移除x，无异常        |
+| `s.remove(x)`               | 从s中移除x，不存在x会引发异常  |
+| `s.clear()`                 | 清空                |
+| `s.pop()`                   | 随机删除并返回           |
+| `x in s`                    | 判断x是否在s中          |
+| `s.union(x)`                | 取s与x的并集，不改变s和x    |
+| `s.intersection(x)`         | 取s与x的交集           |
+| `s.difference(x)`           | 取在s中但不在x中的元素集合    |
+| `s.symmetric_difference(x)` | 取s与x的对称差集         |
+| `s.issubset(x)`             | 判断s是不是x的子集        |
+| `s.issuperset(x)`           | 判断x是不是s的子集        |
 
 #### 七）函数
+
+类似c++，但是并不需要声明参数和返回值的类型，可以（以元组形式）返回多个值，形参是实际参数的一个拷贝，默认参数和实参带名字。
+
+Python函数可以接受个数不定的参数，例如：
+
+```python
+def func1(a, *b):   # * 将列表/元组解包为位置参数
+    print(b)
+c = [1,2,3]
+func1(1, 2, 'ok', c)# >>> (2, 'ok', [1,2,3])
+```
+
+```python
+def func2(**b):# ** 将字典解包为关键词
+    print(b)
+a = dict(p1=2, p2=3, p3=4)
+func2(**a)     # >>> {'p1':2, 'p2':3, 'p3':4}
+```
+
+```python
+def func(a, b, c):
+    print(a, b, c)
+params = {"a": 1, "b": 2, "c": 3}
+func(**params) # 等价于 func(a=1, b=2, c=3)
+```
+
+函数中的参数默认为局部变量，调用全局变量需要加`global`声明。
 
 #### 八）Python内置函数、退出程序和跨文件
 
@@ -453,5 +478,9 @@ from t import hello, haha
 hello()                # >>> Hello from t
 print(f'haha = {haha}')# >>> ok
 ```
+
+[BACK](#TOP)
+
+# <a id="3">Part03</a>
 
 [BACK](#TOP)
