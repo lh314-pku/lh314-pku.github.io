@@ -8,6 +8,8 @@
 
 本人只是将自己笔记上传后归类管理，可以用作学术交流，具体可以在[这里](https://github.com/lh314-pku/lh314-pku.github.io/tree/main/notes)下载。
 
+[支持数学公式](https://zhuanlan.zhihu.com/p/36302775)
+
 ## 大一下_2025春
 
 [人工智能引论](https://lh314-pku.github.io/notes/IntroOfAI_2025Spring/index)

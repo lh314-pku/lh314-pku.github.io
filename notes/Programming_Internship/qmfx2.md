@@ -1,15 +1,3 @@
-<head>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    </script>
-</head>
-
 <a id="TOP">目录</a> 
 
 该部分是考试内容中提到的会考到的库：[BeautifulSoup](#BS)、[Pandas](#P)。
@@ -188,13 +176,5 @@ def getHtmlByPyppeteer(url):
 #### DataFrame的构造、访问、切片、分析统计和修改增删
 
 #### 读写excel和csv文件
-
-
-
-test：$E=MC^2$
-
-$$
-f'(x)=\frac{dy}{dx}
-$$
 
 [BACK](#TOP)
