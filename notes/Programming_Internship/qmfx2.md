@@ -179,14 +179,60 @@ def getHtmlByPyppeteer(url):
 
 关键类：`Series`和`DataFrame`。
 
-`Series`：一维表格，每个元素带标签且有下标，兼具列表和字典的访问形式。
+##### Series
+
+`Series`：一维表格，每个元素带标签且有下标，兼具列表和字典的访问形式，标签和序号都可以作为下标，切片与字符串/元组/列表同理（但是更加推荐显式地访问/切片：`Series.iloc[index]`左闭右开、`Series.loc[index]`左闭右闭）。
 
 ```python
 import pandas as pd
-s = pd.Serise(data=[80,90,100], index=['语文', '数学', '英语'])
-
+s = pd.Series(data=[80,90,100], index=['语文', '数学', '英语'])
+for x in s:
+    print(x, end=" ")     # >>> 80 90 100
+print(s['语文'], s.iloc[1])# >>> 80, 90
 ```
+
+相关函数（应该在考试中会给出）：
+
+`Series.index[]`：通过索引访问标签列表；
+
+`Series.tolist()`：转列表（仅data）；
+
+`Serise.sum()`、`Serise.min()`、`Serise.max()`、`Serise.mean()`、`Serise.median()`：和、最小值、最大值、平均值、中位数；
+
+`Serise.idxmax()`、`Serise.argmax()`：最大元素的标签和下标；
+
+`pd.concat()`：拼接两个Series，不改变前者。
+
+##### DataFrame
+
+DataFrame是带行列标签的二维表格，每一列都是一个Series。
+
+```python
+import pandas as pd
+ppd.set_option('display.unicode.east_asian_width',True)
+# 输出对齐设置
+scores = [['男',108,115,97],['女',115,87,105],['女',100,60,130],['男',112,80,50]]
+names = ['刘一哥','王二姐','张三妹','李四弟']
+courses = ['性别','语文','数学','英语']
+df = pd.DataFrame(data=scores,index = names,columns = courses)
+print(df)
+```
+
+|     | 性别  | 语文  | 数学  | 英语  |
+|:---:|:---:| ---:| ---:| ---:|
+| 刘一哥 | 男   | 108 | 115 | 97  |
+| 王二姐 | 女   | 115 | 87  | 105 |
+| 张三妹 | 女   | 100 | 60  | 130 |
+| 李四弟 | 男   | 112 | 80  | 50  |
+
+我们必须想象老师会给我们一切必要的函数，
+
+就像我们必须想象我在写这一段笔记是快乐的。
 
 #### 读写excel和csv文件
 
+读取的每张工作表都是一个DataFrame，
+
 [BACK](#TOP)
+
+
