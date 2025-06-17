@@ -209,7 +209,7 @@ DataFrame是带行列标签的二维表格，每一列都是一个Series。
 
 ```python
 import pandas as pd
-ppd.set_option('display.unicode.east_asian_width',True)
+pd.set_option('display.unicode.east_asian_width',True)
 # 输出对齐设置
 scores = [['男',108,115,97],['女',115,87,105],['女',100,60,130],['男',112,80,50]]
 names = ['刘一哥','王二姐','张三妹','李四弟']
@@ -231,8 +231,41 @@ print(df)
 
 #### 读写excel和csv文件
 
-读取的每张工作表都是一个DataFrame，
+读取的每张工作表都是一个DataFrame。
+
+##### 对excel的读/写
+
+```python
+import pandas as pd
+pd.set_option('display.unicode.east_asian_width',True)
+dt = pd.read_excel("sample.xlsx", sheet_name=['销售情况', 1], index_col=0)
+# 读取sample.xlsx中'销售情况'和1两张工作表，并且以第0列组为索引
+df = dt['销售情况']
+# dt 是字典，df 是 DataFrame
+df.to_excel("sample.xlsx", sheet_name="Sheet1", na_rep=''.....)
+```
+
+注：如果要在一个excel文档中写入多个工作表，需要用`ExcelWrite`。
+
+```python
+writer = pd.ExcelWriter("new.xlsx")                  # 创建ExcelWriter对象
+df.to_excel(writer, sheet_name="S1")                # 写入工作表S1
+df.T.to_excel(writer, sheet_name="S2")              # 转置矩阵写入
+
+df.sort_values('销售额', ascending=False).to_excel(writer, sheet_name="S3")
+# 按销售额排序的新DataFrame写入工作表S3
+
+df['销售额'].to_excel(writer, sheet_name="S4")       # 只写入一列
+writer.save()
+```
+
+##### 对csv的读写
+
+```python
+# 读
+df = pd.read_csv("result.csv")
+# 写
+df.to_csv("result.csv", sep=",", na_rep='NA', float_format="%.2f", encoding="gbk")
+```
 
 [BACK](#TOP)
-
-
