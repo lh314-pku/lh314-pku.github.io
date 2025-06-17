@@ -175,6 +175,18 @@ def getHtmlByPyppeteer(url):
 
 #### DataFrame的构造、访问、切片、分析统计和修改增删
 
+`pandas`可以在二维表格上进行操作，需要`numpy`支持，如果有`openpyxl/xlrd/xlmt`支持，也可以读写`excel`文档。
+
+关键类：`Series`和`DataFrame`。
+
+`Series`：一维表格，每个元素带标签且有下标，兼具列表和字典的访问形式。
+
+```python
+import pandas as pd
+s = pd.Serise(data=[80,90,100], index=['语文', '数学', '英语'])
+
+```
+
 #### 读写excel和csv文件
 
 [BACK](#TOP)
