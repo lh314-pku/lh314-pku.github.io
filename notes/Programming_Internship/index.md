@@ -11,3 +11,5 @@
 ---
 
 [复习笔记（Python基础）](https://lh314-pku.github.io/notes/Programming_Internship/qmfx1)
+
+[复习笔记（BeautifulSoup、Pandas）](https://lh314-pku.github.io/notes/Programming_Internship/qmfx2)
