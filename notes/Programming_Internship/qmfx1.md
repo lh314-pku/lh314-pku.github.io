@@ -61,19 +61,19 @@ x[-3:-1]# [-3,-1)/[4, 6)
 
 其他相关函数：
 
-| 函数                                   | 功能                     |
-| ------------------------------------ | ---------------------- |
-| `len(x)`                             | 字符串长度                  |
-| `str.count(x)`                       | 子串x出现次数                |
-| `str.upper()`、`str.lower()`          | 转大写/小写                 |
-| `str.find(x)`、`str.rfind(x)`         | 正向/反向查找子串并返回索引，未找到返回-1 |
-| `str.index(x)`、`str.rindex(x)`       | 正向/反向查找子串并返回索引，未找到抛出异常 |
-| `str.replace(s1, s2)`                | 替换子串s1为s2              |
-| `isdigit()`、`isupper()`、`islower()`  | 是否是数字、大写、小写            |
-| `startswith(x)`、`endswith(x)`        | 是否以子串x开头/结尾            |
-| `strip()`、`lstrip()`、`rstrip()`      | 去除两侧、左侧、右侧空白字符         |
-| `split()`                            | 字符串切割                  |
-| `import re`<br/>`re.split(r_str, a)` | 多字符分隔，其中分隔串使用`\|`隔开。   |
+| 函数                                                  | 功能                     |
+| --------------------------------------------------- | ---------------------- |
+| `len(x)`                                            | 字符串长度                  |
+| `str.count(x)`                                      | 子串x出现次数                |
+| `str.upper()`、`str.lower()`                         | 转大写/小写                 |
+| `str.find(x)`、`str.rfind(x)`                        | 正向/反向查找子串并返回索引，未找到返回-1 |
+| `str.index(x)`、`str.rindex(x)`                      | 正向/反向查找子串并返回索引，未找到抛出异常 |
+| `str.replace(s1, s2)`                               | 替换子串s1为s2              |
+| `isdigit()`、`isalpha()`<br/>`isupper()`、`islower()` | 是否是数字、字母、大写、小写         |
+| `startswith(x)`、`endswith(x)`                       | 是否以子串x开头/结尾            |
+| `strip()`、`lstrip()`、`rstrip()`                     | 去除两侧、左侧、右侧空白字符         |
+| `split()`                                           | 字符串切割                  |
+| `import re`<br/>`re.split(r_str, a)`                | 多字符分隔，其中分隔串使用`\|`隔开。   |
 
 `f-strings`：字符串格式化见下。
 
