@@ -109,7 +109,11 @@ str = ''.join(strs)# 列表到字符串转换
 
 `input()`：获取一整行的输入，类似于c++的`std::getline()`
 
+`sys.stdin.read()`会从标准输入中读取所有的内容，直到EOF
+
 `str.split(separator, maxsplit)`：字符串切割，前者确定切割原则，后者确定切割次数。默认为空格和无限次。返回值为list。通常用法：`lst = input().split()`
+
+`splitlines()` 是字符串的另一个方法，用于将字符串按行拆分（根据换行符 `\n` 或者 Windows 的 `\r\n`）并返回一个列表。
 
 `map(function, iterable, ...)`：将一个函数作用于一个或多个可迭代对象的每个元素，并返回一个包含结果的迭代器。通常用法：`nums = list(map(int, input().split()))`
 
