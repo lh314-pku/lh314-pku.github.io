@@ -10,8 +10,12 @@
 
 [支持数学公式](https://zhuanlan.zhihu.com/p/36302775)
 
-## 大一下_2025春
+## 大一下_2025Spring
 
 [人工智能引论](https://lh314-pku.github.io/notes/IntroOfAI_2025Spring/index)
 
 [程序设计实习](https://lh314-pku.github.io/notes/Programming_Internship/index)
+
+## 大二上_2025Autumn
+
+[CMU CSAPP](https://lh314-pku.github.io/notes/CMU_CSAPP/index)
