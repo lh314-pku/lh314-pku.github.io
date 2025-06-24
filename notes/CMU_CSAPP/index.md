@@ -12,6 +12,8 @@
 
 ## 课程笔记：
 
-[Chapter01](https://lh314-pku.github.io/notes/CMU_CSAPP/Chapter01)：A Tour of Computer Systems
+[Lecture01](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture01)：Course Overview
 
+[Lecture02](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture02)：Bits，Bytes，and Integer
 
+[Lecture03](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture03)：Bits，Bytes，and Integers cont
