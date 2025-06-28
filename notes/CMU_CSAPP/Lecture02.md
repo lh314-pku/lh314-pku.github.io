@@ -1,6 +1,14 @@
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
+<head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
 
 # Chapter02 Bits,Bytes,and Integer
 
@@ -17,11 +25,11 @@
 
 bit 可以通过二进制表示，例如：
 
-- $ 15213_{10}\rightarrow11101101101101_{2} $
+- $[15213_{10}\rightarrow11101101101101_{2}]$
 
-- $ 1.20_{10}\rightarrow 1.00110011[0011]..._{2} $
+- $[1.20_{10}\rightarrow 1.00110011[0011]..._{2}]$
 
-- $1.5213_{10}\rightarrow 1.1101101101101_2\times2^{13}$
+- $[1.5213_{10}\rightarrow 1.1101101101101_2\times2^{13}]$
 
 ## Encoding Byte Values
 
