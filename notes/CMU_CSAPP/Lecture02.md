@@ -1,3 +1,15 @@
+<head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
+
 # Chapter02 Bits,Bytes,and Integer
 
 ## Everything is bits
@@ -39,7 +51,3 @@ bit 可以通过二进制表示，例如：
 十六进制使用 `'0'` ~ `'9'` 和 `’A‘` ~ `’F‘`；
 
 $FA1D37B_{16}$ 在 C 语言中写为：`0xFA1D37B`or`0xfa1d37b`。
-
-
-
-
