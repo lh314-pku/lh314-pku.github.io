@@ -8,7 +8,7 @@
 
 本人只是将自己笔记上传后归类管理，可以用作学术交流，具体可以在[这里](https://github.com/lh314-pku/lh314-pku.github.io/tree/main/notes)下载。
 
-[支持数学公式](https://lh314-pku.github.io/How_to_use_LATEX)
+[支持数学公式](https://lh314-pku.github.io/How_to_use_LATEX)、[教学页面](https://lh314-pku.github.io/teaching/index)
 
 ## 大一下_2025Spring
 
