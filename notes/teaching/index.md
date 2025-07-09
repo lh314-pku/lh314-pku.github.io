@@ -2,7 +2,7 @@
 
 各科讲义如下：
 
-- 数学
+- [数学](https://lh314-pku.github.io/notes/teaching/math)
 
 - 物理
 
