@@ -12,7 +12,7 @@
 
 - 作者观点：无~~（我没意见）~~
 
-注：课程与书：《CSAPP》（《Computer Systems A Programmer's perspective》，中文译名《深入理解计算机系统》）在教学进度上没有关联，二者为一个整体。该笔记为课堂笔记，而非对教材的学习笔记。BILIBILI上有课程的熟肉以及对教材的讲解。
+注：课程与书：《CSAPP》（《Computer Systems A Programmer's perspective》，中文译名《深入理解计算机系统》）在教学进度上没有关联，二者为一个整体。该笔记为课堂笔记，而非对教材的学习笔记。[BILIBILI](https://www.bilibili.com/video/BV1iW411d7hd/?p=2&share_source=copy_web&vd_source=f4da441f4dc2fb1600644536b010676a)上有课程的熟肉以及对教材的讲解。
 
 ## 课程笔记：
 
