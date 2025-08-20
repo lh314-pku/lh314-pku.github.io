@@ -23,3 +23,49 @@
 [Lecture02](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture02)：Bits，Bytes，and Integer
 
 [Lecture03](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture03)：Bits，Bytes，and Integers cont
+
+[Lecture04](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture04)：Floating Point
+
+[Lecture05](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture05)：Machine Level Programming I Basic
+
+Lecture06：Machine Level Programming II Control
+
+Lecture07：Machine Level Programming III Procedures
+
+Lecture08：Machine Level Programming IV Date
+
+Lecture09：Machine Level Programming V Advanced Topics
+
+Lecture10：Programm Optimization
+
+Lecture11：The Memory Hierarchy
+
+Lecture12：Cache Memories
+
+Lecture13：Linking
+
+Lecture14：Exceptional Control Flow  Exceptions and Processes
+
+Lecture15：Exceptional Control Flow  Signals and Nonlocal Jumps
+
+Lecture16：System Level I_O
+
+Lecture17：Virtual Memory Concepts
+
+Lecture18：Virtual Memory Systems
+
+Lecture19：Dynamic Memory Alllocation Basic Concepts
+
+Lecture20：Dynamic Memory Alllocation Advanced Concepts
+
+Lecture21：Network Programming Part I
+
+Lecture22：Network Programming Part II
+
+Lecture23：Concurrent Programming
+
+Lecture24：Synchronization Basics
+
+Lecture25：Synchronization Advanced
+
+Lecture26：Thread Level Parallelism
