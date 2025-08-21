@@ -28,9 +28,9 @@
 
 [Lecture05](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture05)：Machine Level Programming I Basic
 
-Lecture06：Machine Level Programming II Control
+[Lecture06](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture06)：Machine Level Programming II Control
 
-Lecture07：Machine Level Programming III Procedures
+[Lecture07](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture07)：Machine Level Programming III Procedures
 
 Lecture08：Machine Level Programming IV Date
 

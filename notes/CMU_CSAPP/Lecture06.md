@@ -128,6 +128,178 @@ absdiff:
     ret
 ```
 
+参考C语言中的`goto`语句。
+
+### 条件移动指令（Conditional Move Instructions in C）
+
+```c
+if (test) Desc <- Src
+```
+
+即如果满足指定的测试条件，就将 `Src` 的值移动到 `Dest`。
+
+则此前代码可以编译为：
+
+```aspnet
+absdiff:
+    movq    %rdi, %rax
+    subq    %rsi, %rax # result = x-y
+    movq    %rsi, %rdx
+    subq    %rdi, %rdx # eval = y-x
+    cmpq    %rsi, %rdi
+    cmovle  %rdx, %rax
+    ret
+```
+
+#### Bad Cases?
+
+- **Expensive（高代价计算）**
+  `val = Test(x) ? Hard1(x) : Hard2(x);`中的两个分支均会被计算，造成不必要的资源开销，只有在计算非常简单时才有意义；计算较复杂时应该使用传统的条件跳转。
+
+- **Risky（风险计算）**
+  `val = p ? *p : 0;`无论 `p` 是否为非空指针，`*p` 都会被计算。因此，如果 `p` 是一个空指针，可能会引发**未定义行为**或**程序崩溃**。应优先选择传统分支方法进行显式判断。
+
+- **Side effects（有副作用的计算）**
+  `val = x > 0 ? x *= 7 : x += 3;`在这个过程中，`x`的值发生了多次改变，条件移动要求计算必须是**无副作用的**，而这段代码直接修改了变量 `x`，违背了该要求。
+
 ## Loops
 
+（以`do-while`循环为例）
+
+```c
+do
+    Body
+    while (Test);
+```
+
+```c
+loop:
+    Body
+    if (Test)
+        goto loop
+```
+
+除此之外还有`while`循环和`for`循环。他们均可以相互转换（包含`goto`语句）。
+
 ## Switch Statements
+
+example：
+
+```c
+long switch_eg(long x, long y, long z){
+    long w = 1;
+    switch(x){
+    case 1:
+        w = y*z; break;
+    case 2:
+        w = y/z;
+        /* Fall Through */
+    case 3:
+        w += z; break;
+    case 5:
+    case 6:
+        w -= z; break;
+    default:
+        w = 2;
+    }
+    return w;
+}
+```
+
+### Jump Table（跳转表）& Jump Targets
+
+考虑`switch`的伪代码形式：
+
+```c
+switch(x) {
+    case val_0: Block 0;
+    case val_1: Block 1;
+    ...
+    case val_(n-1): Block n-1;
+}
+```
+
+`switch(x)` 根据变量 `x` 的值决定跳转到哪一个 `case` 分支对应的代码块（`Block`）。
+
+我们引入**Jump Table（跳转表）** 的概念，作为一种数据结构，通过一张表直接将变量值映射到分支代码块的目标地址，减少条件判断的操作，用于高效实现 `switch-case` 语句。
+
+- **跳转表 (JTab)**: 表中每一项存储一个分支代码块的目标地址（如 `Targ0`, `Targ1`）。
+
+- **跳转目标 (Jump Targets)**: 每个目标地址（如 `Targ0`, `Targ1`, `Targ2`）对应具体的代码块（`Block 0`、`Block 1`等）。
+
+具体实现的伪代码为：
+
+```c
+goto *JTab[x];
+```
+
+| **类别**    | **优点**                                   | **缺点**                                             |
+| --------- | ---------------------------------------- | -------------------------------------------------- |
+| **高效性**   | 直接通过索引访问跳转目标，避免逐一比较和查找，性能优于链式 `case` 判断。 | 当 `case` 值过于稀疏时，跳转表会浪费大量内存（低效）。                    |
+| **优化分支**  | 适用于分支较多的情况，尤其是分布稠密的连续整数值。                | 不适用于分支较少或值分布不连续（如 1, 10, 100）的情况，编译器可能回退到其他实现方式。   |
+| **边界检查**  | 编译器可在需要时生成跳转表，大大简化大量分支代码逻辑。              | 需要额外的边界检查，防止非法索引（如 `x` 超出表的有效范围时）。                 |
+| **存储效率**  | 占用的存储空间（内存）与分支数量一致，适用于分布稠密的整数值。          | 对于跨度大的分支（如 0 和 1,000,000），表会非常稀疏，无法高效存储，可能占用过多的内存。 |
+| **编译器支持** | 现代编译器（如 GCC、Clang）会根据分支情况自动生成合理的跳转表实现优化。 | 编译器未必在所有情况下生成跳转表，例如分支太少或条件不适合时会选择其他实现方案（如二分查找）。    |
+
+### 汇编？
+
+对于上文的`switch`代码，汇编部分（Setup）写为：
+
+```aspnet
+switch_eg:
+    movq    %rdx, %rcx
+    cmpq    $6, %rdi       # x:6
+    ja      .L8            # Use default
+    jmp     *.L4(, %rdi, 8)# Goto *JTab[x]
+```
+
+而跳转表（ Jump Table）如下：
+
+```c
+.section    .rodata
+    .align 8
+.L4
+    .quad    .L8 # x = 0
+    .quad    .L3 # x = 1
+    .quad    .L5 # x = 2
+    .quad    .L9 # x = 3
+    .quad    .L8 # x = 4
+    .quad    .L7 # x = 5
+    .quad    .L7 # x = 6
+```
+
+具体到每一部分则如下所示（以`case 1:`为例）：
+
+```c
+.L3:
+    movq    %rsi, %rax # y
+    imulq   %rdx, %rax # y*z
+    ret
+```
+
+由于`case 2:`部分没有写`break;`语句，其会继续执行后续代码：
+
+```c
+.L5:                     # Case 2
+    movq %rsi, %rax      # 将参数 y (%rsi) 的值加载到寄存器 %rax
+    cqto                 # 将 %rax 的符号扩展到 %rdx 和 %rax，准备执行有符号除法
+    idivq %rcx           # 执行 y / z，其中 z 存储在 %rcx，结果存储在 %rax
+    jmp .L6              # 跳转到 merge 部分，执行合并逻辑
+.L9:                     # Case 3
+    movl $1, %eax        # 将 w 初始化为 1 (写入 %eax)
+.L6:                     # Merge point
+    addq %rcx, %rax      # 将 z (%rcx) 加到 w (%rax)，完成 w += z
+    ret
+```
+
+以及剩余的情况；
+
+```c
+.L7:                # Case 5,6
+    movl $1, %eax
+    subq %rdx, %rax
+    ret
+.L8:                # Default:
+    movl $2, %eax
+    ret
+```
