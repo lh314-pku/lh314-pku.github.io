@@ -354,37 +354,78 @@ int oneMoreThan(int x, int y) {
 
 - 评分：3
 
-这道题需要考虑溢出情况（其实不考虑也没关系），而且对于负数来说是需要进一（即向0舍入）。所以我们需要加入偏置`bias`：
+这道题需要考虑溢出情况（其实不考虑也没关系），而且对于负数来说是需要进一（即向0舍入）。所以我们需要加入偏置`bias`，保证`x >= 0`时向下舍入而`x < 0`时向上舍入。
+
+```c
+int ezThreeFourths(int x) {
+  int threeTimesX = (x << 1) + x;
+  int bias = (threeTimesX >> 31) & 3;
+  return (threeTimesX + bias) >> 2;
+}
+```
+
+解释一下：若`3x < 0`，则`threeTimesX >> 31`为`0xffffffff`，`bias = 0x3`。除非`3x`可以被4整除（即以`00`结尾），加上`bias`后都会进一位到第3位（即结果的最后一位），实现了向上舍入。
 
 ## isLess
 
-- 目标：
+- 目标：若`x < y`则返回1，否则返回0。
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`
 
-- 最大操作数：
+- 最大操作数：24
 
-- 评分：
+- 评分：3
+
+通过提取符号位和做差，考虑两种情况：`x < 0 && y >= 0`或者两者同号时`y - x > 0`：
+
+```c
+int isLess(int x, int y) {
+  int diff = !!(y ^ x);
+  int sign_x = (x >> 31) & 1;
+  int sign_y = (y >> 31) & 1;
+  int a1 = sign_x & (!sign_y);
+  int sign_yx = ((y + ~x + 1) >> 31) & 1;
+  int a = !((sign_x ^ sign_y) | sign_yx);
+  return (a1 | a) & diff;
+}
+```
 
 ## satMul2
 
-- 目标：
+- 目标：对`x`乘2，但是向下溢出返回`0x80000000`，向上溢出返回`0x7fffffff`
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`
 
-- 最大操作数：
+- 最大操作数：20
 
-- 评分：
+- 评分：3
+
+题目逻辑很简单：先`x2`，再判断溢出。问题出现在两个方面：1.溢出怎么得到两种不同的结果？2.怎么在没有条件语句的情况下实现条件返回。
+
+```c
+int satMul2(int x) {
+  int xx = x << 1;
+  int overflow = (xx ^ x) >> 31; // 溢出? 是:-1=0xffffffff,否:0=0x00000000
+  int dir = xx >> 31; // 溢出方向? 正向:-1,反向:0
+  int Tmin = 1 << 31; // 0x80000000
+  int res1 = (~overflow) & xx;
+  // 考虑溢出情况：正向溢出到0x7fffffff，反向溢出到0x80000000
+  int res2 = overflow & (dir ^ Tmin);
+  return res1 | res2;
+}
+```
+
+A：1.溢出处理很简单，因为Tmax和Tmin互反，所以通过溢出方向+异或运算即可。2.我们可以得到一种通用的条件结构：对于条件cond，是则有结果res1，否则有结果res2，可以如此输出：`return (cond & res1) | (~cond & res2)`（注：上述的“是否”指：是`0xffffffff`，否`0x0`）
 
 ## modThree
 
-- 目标：
+- 目标：在不使用`%`的情况下对一个数模三。
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`
 
-- 最大操作数：
+- 最大操作数：60
 
-- 评分：
+- 评分：4
 
 ## float_half
 
@@ -425,3 +466,27 @@ int oneMoreThan(int x, int y) {
 - 最大操作数：
 
 - 评分：
+
+---
+
+最后评分：
+
+```c
+Points  Rating  Errors  Points  Ops     Puzzle
+1       1       0       2       4       bitOr
+1       1       0       2       7       upperBits
+2       2       0       2       11      fullAdd
+3       3       0       2       16      rotateLeft
+4       4       0       2       11      bitParity
+4       4       0       2       27      palindrome
+2       2       0       2       2       negate
+2       2       0       2       7       oneMoreThan
+3       3       0       2       6       ezThreeFourths
+3       3       0       2       19      isLess
+3       3       0       2       10      satMul2
+4       4       0       2       50      modThree
+4       4       0       2       20      float_half
+4       4       0       2       28      float_i2f
+4       4       0       2       19      float64_f2i
+4       4       0       2       9       float_pwr2
+```
