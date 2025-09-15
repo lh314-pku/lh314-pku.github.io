@@ -19,3 +19,5 @@
 ## 大二上_2025Autumn
 
 [CMU CSAPP](https://lh314-pku.github.io/notes/CMU_CSAPP/index)
+
+[PKU ICS](https://lh314-pku.github.io/notes/ICS/index)
