@@ -427,45 +427,119 @@ A：1.溢出处理很简单，因为Tmax和Tmin互反，所以通过溢出方向
 
 - 评分：4
 
+这道题感觉是一道纯粹的数论题，其中需要两个前提：
+
+1. `2^n mod 3`的结果中，`1`, `2`循环出现；
+
+2. `2^2^n(n > 0)`与1同余；
+
+首先，判断`x`是否为0或Tmin，方便后续求负数：
+
+```c
+int isTmin = !((!x) | (x^(~x+1)));
+```
+
+接下来考虑`x`的绝对值，方便后续合并求模：
+
+```c
+int sign = x >> 31;
+int abs_x = (sign & (~x+1)) | ((~sign) & x);
+int mask = (0xff << 8) + 0xff;
+int res = abs_x;
+res = (res >> 16) + (res & mask);
+res = (res >> 16) + (res & mask);
+res = (res >> 8) + (res & 0xff);
+res = (res >> 8) + (res & 0xff);
+res = (res >> 4) + (res & 0xf);
+res = (res >> 4) + (res & 0xf);
+res = (res >> 2) + (res & 3);
+res = (res >> 2) + (res & 3);
+```
+
+接下来考虑修正：
+
+1. 因为`res`只剩下两位，但是不排除剩余3的可能，可以判断是否为3。若为3，则加上`isThree == 1`，通过进位使后两位归零；
+
+2. 如果`x`为0或Tmin，由于取负时的问题，需要在`res`后加上`isTmin == 1`，作为修正（负数与其绝对值的模差1位）；
+
+3. 若原数为负，还需要对`res`作`~res + 1`。
+
+```c
+int isThree;
+isThree = !(res ^ 3);
+res += isThree + isTmin;
+res = res & 3;
+return (sign & (~res + 1)) | (~sign & res);
+```
+
+合并代码，即得解决方案（注意代码规范：变量一律声明在最前面）：
+
+```c
+int modThree(int x) {
+  int isTmin = !((!x) | (x^(~x+1)));
+  int sign = x >> 31;
+  int abs_x = (sign & (~x+1)) | ((~sign) & x);
+  int mask = (0xff << 8) + 0xff;
+  int res = abs_x;
+  int isThree;
+  res = (res >> 16) + (res & mask);
+  res = (res >> 16) + (res & mask);
+  res = (res >> 8) + (res & 0xff);
+  res = (res >> 8) + (res & 0xff);
+  res = (res >> 4) + (res & 0xf);
+  res = (res >> 4) + (res & 0xf);
+  res = (res >> 2) + (res & 3);
+  res = (res >> 2) + (res & 3);
+  isThree = !(res ^ 3);
+  res += isThree + isTmin;
+  res = res & 3;
+  return (sign & (~res + 1)) | (~sign & res);
+}
+```
+
+> 从浮点数部分开始可以使用允许的语句和所有大数，以及任意`int / unsigned`的运算，但是不能使用浮点类型的变量。、
+> 
+> 题目中32位浮点数以`unsigned`给出，返回值同理。
+
 ## float_half
 
-- 目标：
+- 目标：对一个浮点数`*0.5`
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`、`||`、`&&`、`if`、`while`
 
-- 最大操作数：
+- 最大操作数：30
 
-- 评分：
+- 评分：4
 
 ## float_i2f
 
-- 目标：
+- 目标：`int`转`float`
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`、`||`、`&&`、`if`、`while`
 
-- 最大操作数：
+- 最大操作数：30
 
-- 评分：
+- 评分：4
 
 ## float64_f2i
 
-- 目标：
+- 目标：`double`（64位浮点数）转`int`
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`、`||`、`&&`、`if`、`while`
 
-- 最大操作数：
+- 最大操作数：20
 
-- 评分：
+- 评分：4
 
 ## float_pwr2
 
-- 目标：
+- 目标：任意`2^n`的浮点表示
 
-- 可用操作：
+- 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`、`||`、`&&`、`if`、`while`
 
-- 最大操作数：
+- 最大操作数：30
 
-- 评分：
+- 评分：4
 
 ---
 
