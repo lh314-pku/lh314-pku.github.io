@@ -32,7 +32,7 @@
 
 [Lecture07](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture07)：Machine Level Programming III Procedures
 
-Lecture08：Machine Level Programming IV Date
+[Lecture08](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture08)：Machine Level Programming IV Date
 
 Lecture09：Machine Level Programming V Advanced Topics
 

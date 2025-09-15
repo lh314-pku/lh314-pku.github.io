@@ -115,4 +115,108 @@ long mult2(long, a, long b){
 
 在返回地址处，会有一个可选的帧指针`%rbp`。
 
+#### example：
+
+```c
+long incr(long *p, long val){
+    long x = *p;
+    long y = x + val;
+    *p = y;
+    return x;
+}
+```
+
+```aspnet
+incr:
+    movq    (%rdi),%rax   # %rdi : p
+    addq    %rax,%rsi     # %rsi : val, y
+    movq    %rsi,(%rdi)   # %rax : x
+    ret
+```
+
+如上是函数`incr`的代码和指令。现在我们来看`call_incr`函数：
+
+```c
+long call_incr() {
+    long v1 = 15213;
+    long v2 = incr(&v1, 3000);
+    return v1 + v2;
+}
+```
+
+```asm6502
+call_incr:
+    subq $16, %rsp
+    movq $15213, 8(%rsp)
+    movl $3000, %esi
+    leaq 8(%rsp), %rdi
+    call incr
+    addq 8(%rsp), %rax
+    addq $16, %rsp
+    ret
+```
+
+首先，第一行`long v1 = 15213;`生成了两条指令：
+
+- `subq $16, %rsp`：对`%rsp`进行减法操作，在栈中分配了16字节空间；
+
+- `movq $15213, 8(%rsp)`：将栈的前8字节分配给参数`v1`，剩余8字节（当前`%rsp`）未被使用。
+
+`leaq 8(%rsp), %rdi`将`v1`的地址存放在`%rdi`中，作为指针（即`*p`）传入`incr`函数。
+
+之后，通过`call incr`调用`incr`函数，并把`v1`也加到`%rax`上返回。
+
+最后，`addq $16, %rsp`释放内存。
+
+#### conventions
+
+对于函数的调用关系，调用其他函数的函数称为**调用者（caller）**、被调用的函数称为被**调用者（callee）**。
+
+管理寄存器的方法包括：**Caller Saved**和**Callee Saved**.
+
+因此按照约定：
+
+- `%rax`：caller-saved，存储返回值。
+
+- `%rdi,... , %r9`：caller-saved，参数
+
+- `%r10, %r11`：caller-saved，可以被任意函数修改的临时值
+
+- `%rbx,%r12,%r13,%r14`：callee-saved，使用前必须存储其原值，并且在使用后恢复其值。
+
+- `%rbp`：callee-saved，同上，也可作为帧指针。
+
+- `%rsp`：callee-saved，`%rsp`的值在函数调用过程中可以改变（e.g. 分配栈空间或者回收栈空间），但在函数返回时，`%rsp`的值必须恢复到原始值。
+
 ## Illustration of Recursion(递归示例)
+
+我们以`pcount`函数的递归版本为例：
+
+```c
+long pcount_r(unsigned long x){
+    if (x == 0){
+        return 0;
+    }
+    else{
+        return (x & 1) + pcount_r(x >> 1);
+    }
+}
+```
+
+```asm6502
+pcount_r:
+    movl    $0, %eax
+    testq   %rdi, %rdi
+    je      .L6
+    pushq   %rbx
+    movq    %rdi, %rbx
+    andl    $1, %ebx
+    shrq    %rdi
+    call    pcount_r
+    addq    %rbx, %rax
+    popq    %rbx
+.L6:
+    rep;    ret
+```
+
+
