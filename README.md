@@ -21,3 +21,5 @@
 [CMU CSAPP](https://lh314-pku.github.io/notes/CMU_CSAPP/index)
 
 [PKU ICS](https://lh314-pku.github.io/notes/ICS/index)
+
+[PKU:Computer Vision](https://lh314-pku.github.io/notes/CV/index)
