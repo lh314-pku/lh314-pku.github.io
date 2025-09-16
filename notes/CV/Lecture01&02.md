@@ -66,6 +66,10 @@ Computer Vision is Hard。
 
 镜头的作用是捕捉更多光线，同时尽可能保持理想小孔相机的抽象特性。
 
+### 薄透镜公式(Thin Lens Equation)：
+
+设$ y $ 是物体高度，$ y' $ 是成像高度，$ z $ 是物体距透镜的距离，$ z' $ 是成像距透镜的距离，则有：
+
 ## Depth of Field景深
 
 ## Field of View视角
