@@ -511,6 +511,34 @@ int modThree(int x) {
 
 - 评分：4
 
+浮点数包含符号位、指数位和尾数位，除以2的操作需要分情况考虑：
+
+- 若为`INF`或`NaN`，直接返回参数；
+
+- 非规格数需要将尾数位右移1位；
+
+- 规格数需要将`exp`减一，若此时结果为非规格数，尾数位也需要右移，弥补非规格化数的尾数位不加 1 的问题；
+
+最后处理进位问题：以`11`结尾则进位。
+
+```c
+unsigned float_half(unsigned uf) {
+  // float(32位浮点数有1位符号位，8位指数位，23位尾数位)
+  int sign = uf & 0x80000000, exp = uf & 0x7f800000, frac = uf & 0x007fffff;
+  // 去除最后两位是否需要向上舍入（只有以11结尾才要舍入）
+  int round = !((uf & 3) ^ 3); // 需要舍入则为1，反之为0
+  // 浮点数减半的想法，可以由指数位-1实现。
+  if(exp == 0x7f800000) // 指数位全1,Inf or NaN
+    return uf;
+  if(!exp) // 非规格数，尾数位右移一位
+    return sign + (frac >> 1) + round;
+  if((exp >> 23) == 1) // -1后会变为非规格数
+    return sign + ((exp + frac) >> 1) + round;
+  // 其余直接指数位-1即可
+  return sign + (exp - 0x00800000) + frac;
+}
+```
+
 ## float_i2f
 
 - 目标：`int`转`float`
@@ -521,15 +549,79 @@ int modThree(int x) {
 
 - 评分：4
 
+由于整数的指数位一定不会是负的，使用考虑如下情况：
+
+- 0或Tmin，直接返回；
+
+- 规定符号位并求得指数位，左移x清除前置的0；
+
+- 32位`int`（已经将1左移至最左端），只能保留中间23位（由于`frac`加一所有第一位1省略）,故后面8位需要省略，考虑舍入；
+
+```c
+unsigned float_i2f(int x) {
+  unsigned sign = 0, exp = 0, frac = 0, round = 0;
+  sign = (x >> 31) & 1;
+  if(!x) { return 0; }
+  if(!(x ^ 0x80000000)) { return 0xcf000000; }// Tmin的浮点表示
+  if(sign) { x = -x; } 
+  exp = 31;
+  while(!(x >> exp)) { exp--; }
+  x = x << (31 - exp);
+  exp += 0x7f;
+  frac = (x >> 8) & 0x007fffff;
+  round = x & 0xff;
+  // 考虑舍入：如果round>0x80（即省略部分为11xxxxxx）或正好为0x80（10xxxxxx）且前一位也是1，则进一
+  frac += ((round > 0x80) || ((round == 0x80) && (frac & 1)));
+  // 考虑舍入后frac超过23位:
+  if(frac >> 23){
+    frac = frac & 0x007fffff;
+    exp++;
+  }
+  return (sign << 31) + (exp << 23) + frac;
+}
+```
+
 ## float64_f2i
 
-- 目标：`double`（64位浮点数）转`int`
+- 目标：`double`（64位浮点数）转`int`，其中`uf1`是该双精度浮点数的低位。
 
 - 可用操作：`!`、`~`、`&`、`^`、`|`、`+`、`<<`、`>>`、`||`、`&&`、`if`、`while`
 
 - 最大操作数：20
 
 - 评分：4
+
+（先说一句，这题有一个不明所以的雷点：`sign`和`frac`只要使用`int`就不能通过测试，但使用`unsigned`就可以通过测试）
+
+双精度浮点数有一位符号位，11位指数位，52位尾数位。
+
+思路与上一题相同：提取符号位、指数位和尾数位。`int`只有31位有效位而`double`有52位，必然会出现舍入。之后考虑边界范围、舍入和正负。
+
+```c
+int float64_f2i(unsigned uf1, unsigned uf2) {
+  // 双精度浮点数：1 sign + 11 exp + 52 frac
+  unsigned sign = (uf2 >> 31);
+  int exp_mask = 0x7ff;
+  int exp = ((uf2 >> 20) & exp_mask) - 0x3ff;
+  unsigned frac = ((uf2 & 0xfffff) << 11) + ((uf1 >> 21) & 0x7ff) + 0x80000000;
+  if(exp < 0){
+    return 0;
+  }
+  else if(exp >= 31){
+    return 0x80000000u;
+  }
+  else{
+    frac = (frac >> (31 - exp)) & ~(0x80000000 >> (30 - exp));
+    // 算数左移可能会导致高位出现1
+    if(sign){
+      return (-frac);
+    }
+    else{
+      return frac;
+    }
+  }
+}
+```
 
 ## float_pwr2
 
@@ -540,6 +632,35 @@ int modThree(int x) {
 - 最大操作数：30
 
 - 评分：4
+
+我们需要先搞清楚浮点数的表示范围：
+
+最大的浮点数是`0x7f7fffff`，`exp = 126`，即`2^128 - 2^104`，超过2^127的数均返回`0x7f800000=INF`；
+
+最小的规格化浮点数是`0x00800000 = 2^(-126)`，`exp = 1`，`frac = 00...0`；
+
+最小的非规格化浮点数为`0x00000001=2^(-23-126)=2^(-149)`。
+
+综上，故有：
+
+```c
+unsigned float_pwr2(int x) {
+  if(x >= 128){
+    return 0x7f800000;
+  } // INF
+  else if(x < -149){
+    return 0;
+  } // 0
+  else if(x > -127){
+    int exp = x + 127;
+    return (exp << 23);
+  } // 规格数，直接移位到指数位即可
+  else{
+    int t = 149 + x;
+    return (1 << t);
+  } // -149 < x <= -126,非规格数,exp=0
+}
+```
 
 ---
 
@@ -563,4 +684,7 @@ Points  Rating  Errors  Points  Ops     Puzzle
 4       4       0       2       28      float_i2f
 4       4       0       2       19      float64_f2i
 4       4       0       2       9       float_pwr2
+
+Score = 80/80 [48/48 Corr + 32/32 Perf] (246 total operators)
+Final Score (scaled) = 100/100
 ```
