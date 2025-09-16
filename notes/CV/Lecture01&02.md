@@ -55,7 +55,7 @@ Computer Vision is Hard。
 
 #### 3.Summary
 
-投影公式：$\Pi=\begin{bmatrix}f&s&c_x\\0&\alpha f&c_y\\0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\end{bmatrix}\begin{bmatrix}R_{3\times3}&0\\0&1\end{bmatrix}\begin{bmatrix}I_{3\times3}&t_{3\times1}\\0&1\end{bmatrix}$
+投影公式：$\Pi=\begin{bmatrix}f&s&c_x\\ 0&\alpha f&c_y\\ 0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\ 0&1&0&0\\ 0&0&1&0\end{bmatrix}\begin{bmatrix}R_{3\times3}&0\\ 0&1\end{bmatrix}\begin{bmatrix}I_{3\times3}&t_{3\times1}\\ 0&1\end{bmatrix}$
 
 - **f：焦距 (focal length)**。
 
@@ -79,7 +79,13 @@ Computer Vision is Hard。
 
 ### 薄透镜公式(Thin Lens Equation)：
 
-设$ y $ 是物体高度，$ y' $ 是成像高度，$ z $ 是物体距透镜的距离，$ z' $ 是成像距透镜的距离，则有：
+设$ y $ 是物体高度，$ y' $ 是成像高度，$ z $ 是物体距透镜的距离，$ z' $ 是成像距透镜的距离，则由相似三角形有：
+
+$$
+\frac{y}{y'}=\frac{z}{z'}
+$$
+
+
 
 ## Depth of Field景深
 
