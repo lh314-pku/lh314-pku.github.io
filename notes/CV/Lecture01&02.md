@@ -39,15 +39,21 @@ Computer Vision is Hard。
 
 设坐标$x = (x,y,x,w)=(x/w,y/w,z/w,1)$，化归为**齐次坐标(Homogeneous coordinates)**，方便平移和旋转的统一；
 
-**平移矩阵(Translation)** 是一个$4\times4$的矩阵，有三个自由度：$T=\begin{bmatrix}I_{3\times3}&t_{3\times1}\\0&1\end{bmatrix}$，其中$t_{3\times1}=[t_x,t_y,t_z]^T$为平移向量，即相机中心在世界坐标系中的位置。
+**平移矩阵(Translation)** 是一个$4\times4$的矩阵，有三个自由度：$T=\begin{bmatrix}I_{3\times3}&t_{3\times1}\\ 0&1\end{bmatrix}_{2\times2}$，其中$t_{3\times1}=[t_x,t_y,t_z]^T$为平移向量，即相机中心在世界坐标系中的位置。
 
-**旋转矩阵(Rotation)** 也是$4\times4$矩阵，存在3个自由度：$R=\begin{bmatrix}R_{3\times3}&0\\0&1\end{bmatrix}$，表示x、y、z三个坐标轴的旋转情况；
+**旋转矩阵(Rotation)** 也是$4\times4$矩阵，存在3个自由度：$R=\begin{bmatrix}R_{3\times3}&0\\ 0&1\end{bmatrix}_{2\times2}$，表示x、y、z三个坐标轴的旋转情况；
 
-平移和旋转操作可以同时进行，即**刚体变换矩阵(Rigid transformation)**：$M=\begin{bmatrix}R_{3\times3}&t_{3\times1}\\0&1\end{bmatrix}$，有6个自由度。
+平移和旋转操作可以同时进行，即**刚体变换矩阵(Rigid transformation)**：$M=\begin{bmatrix}R_{3\times3}&t_{3\times1}\\ 0&1\end{bmatrix}_{2\times2}$，有6个自由度。
 
 #### 2.相机内参（Intrinsic Camera Parameters）
 
-相机内参的作用是将相机坐标系下的三维点投影到成像平面的二维点。我们设相机坐标系下的点$P=(x_c,y_c,z_c)$，像平面坐标$(x_s,y_x)$，焦距(Focal Length)为$f$，由投影关系知：$\frac{x_s}{f}=\frac{x_c}{z_c}$，既有如下矩阵：$\begin{bmatrix}f&0&c_x\\0&f&c_y\\0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&\textcolor{red}1&0\end{bmatrix}$，前者称为内参矩阵，利用二维齐次坐标进行缩放和平移操作，$c_x,c_y$称为**主点(principal point)**，表示图像平面中光轴的偏移；后者称为投影矩阵，当右下角的“1”有两种情况：
+相机内参的作用是将相机坐标系下的三维点投影到成像平面的二维点。我们设相机坐标系下的点$P=(x_c,y_c,z_c)$，像平面坐标$(x_s,y_x)$，焦距(Focal Length)为$f$，由投影关系知：$\frac{x_s}{f}=\frac{x_c}{z_c}$，既有如下矩阵：
+
+$$
+\begin{bmatrix}f&0&c_x\\0&f&c_y\\0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&\textcolor{red}1&0\end{bmatrix}
+$$
+
+前者称为内参矩阵，利用二维齐次坐标进行缩放和平移操作，$c_x,c_y$称为**主点(principal point)**，表示图像平面中光轴的偏移；后者称为投影矩阵，当右下角的“1”有两种情况：
 
 - **透视投影 (Perspective Projection)**：焦距$f$和$z_c$不为 0，近大远小。常用于实际摄像机。
 
@@ -55,7 +61,11 @@ Computer Vision is Hard。
 
 #### 3.Summary
 
-投影公式：$\Pi=\begin{bmatrix}f&s&c_x\\ 0&\alpha f&c_y\\ 0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\ 0&1&0&0\\ 0&0&1&0\end{bmatrix}\begin{bmatrix}R_{3\times3}&0\\ 0&1\end{bmatrix}\begin{bmatrix}I_{3\times3}&t_{3\times1}\\ 0&1\end{bmatrix}$
+投影公式：
+
+$$
+\Pi=\begin{bmatrix}f&s&c_x\\ 0&\alpha f&c_y\\ 0&0&1\end{bmatrix}\begin{bmatrix}1&0&0&0\\ 0&1&0&0\\ 0&0&1&0\end{bmatrix}\begin{bmatrix}R_{3\times3}&0\\ 0&1\end{bmatrix}\begin{bmatrix}I_{3\times3}&t_{3\times1}\\ 0&1\end{bmatrix}
+$$
 
 - **f：焦距 (focal length)**。
 
