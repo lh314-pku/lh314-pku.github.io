@@ -1,3 +1,14 @@
+<head>
+   <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+
 # Image Processing图像处理
 
 ## Image Processing图像处理
@@ -194,7 +205,17 @@ $$
 
 ### 1.Median Filter中值滤波
 
+高斯滤波的问题#1：不能很好地去除噪音、且边缘模糊。
+
+**中值滤波器**：对于给定范围内，取到中间值的滤波器。
+
+可以有效减少某些类型的噪音，如脉冲噪音（也称为‘盐和胡椒’噪音或‘瞬态’噪音）。中值滤波使得具有不同值的点更像它们的邻居。
+
 ### 2.Bilateral Filter双边滤波
+
+高斯滤波的问题#2：滤波核在整个图像中是均匀的。它不依赖于图像的内容。
+
+
 
 ## Application of Filters应用
 
