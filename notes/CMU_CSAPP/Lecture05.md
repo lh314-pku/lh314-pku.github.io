@@ -321,7 +321,7 @@ swap:
 
 ## Arittmetic & logical operations
 
-### 地址计算
+### 地址计算load effective address
 
 **代码**：`leaq Src, Dst`.
 
