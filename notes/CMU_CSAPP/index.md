@@ -34,11 +34,11 @@
 
 [Lecture08](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture08)：Machine Level Programming IV Date
 
-Lecture09：Machine Level Programming V Advanced Topics
+[Lecture09](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture09)：Machine Level Programming V Advanced Topics
 
-Lecture10：Programm Optimization
+[Lecture10](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture10)：Programm Optimization
 
-Lecture11：The Memory Hierarchy
+[Lecture11](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture11)：The Memory Hierarchy
 
 Lecture12：Cache Memories
 
