@@ -181,7 +181,7 @@ loop:
 
 除此之外还有`while`循环和`for`循环。他们均可以相互转换（包含`goto`语句）。
 
-while循环有一个01优化版本：
+`while`循环有一个**O1**优化版本：
 
 ```c
 if(!Test) goto done;
