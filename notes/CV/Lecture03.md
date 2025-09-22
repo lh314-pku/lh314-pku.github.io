@@ -171,6 +171,8 @@ g(i, j) = \sum_{k, l} f(i - k, j - l) h(k, l)
 \\= \sum_{k, l} f(k, l) h(i - k, j - l)
 $$
 
+相较于“相关”，卷积还需要对卷积核进行翻转。
+
 对于卷积神经网络，其实是在作“相关”运算。两者都称为 **“线性移位不变性linear shift-invariant”LSI** 运算：
 
 - **Linear**：$h \circ (f_0 + f_1) = h \circ f_0 + h \circ f_1$
@@ -209,19 +211,95 @@ $$
 
 **中值滤波器**：对于给定范围内，取到中间值的滤波器。
 
-可以有效减少某些类型的噪音，如脉冲噪音（也称为‘盐和胡椒’噪音或‘瞬态’噪音）。中值滤波使得具有不同值的点更像它们的邻居。
+可以有效减少某些类型的噪音，如脉冲噪音（也称为‘椒盐’噪音或‘瞬态’噪音）。中值滤波使得具有不同值的点更像它们的邻居。
 
 ### 2.Bilateral Filter双边滤波
 
 高斯滤波的问题#2：滤波核在整个图像中是均匀的。它不依赖于图像的内容。
 
+**双边滤波/Content-Aware Dynamic Filter内容感知动态过滤器**：滤波核与图像内容有关，既可以去除噪音，又可以很好得保留特征。实现双边滤波器需要两个高斯：
 
+- **Domain Kernel**：以距离为特征的高斯核，反映像素与中心偏离程度与权重的关系。
+
+$$
+d(i,j,k,l)=\exp{(-\frac{(i-k)^2+(j-l)^2}{2\sigma_d^2})}
+$$
+
+- **Range Kernel**：以图像差异为特征的高斯核，反映像素与中心像素值差异与权重关系。像素/颜色差异越大，权重越小。
+
+$$
+r(i, j, k, l) = \exp\left(-\frac{\|\mathbf{f}(i, j) - \mathbf{f}(k, l)\|^2}{2\sigma_r^2}\right)
+$$
+
+- **Bilateral Filter**：domain * range，双边滤波器
+
+$$
+w(i, j, k, l) = \exp\left(-\frac{(i - k)^2 + (j - l)^2}{2\sigma_d^2} - \frac{\|\mathbf{f}(i, j) - \mathbf{f}(k, l)\|^2}{2\sigma_r^2}\right)
+$$
+
+最后在滤波过程中对结果作归一化：
+
+$$
+\mathbf{g}(i, j) = \frac{\sum_{k, l} \mathbf{f}(k, l) w(i, j, k, l)}{\sum_{k, l} w(i, j, k, l)}
+$$
+
+对一张图片连续使用5次双边滤波后会有卡通风格（临近像素同化为几乎同种颜色，差异较大的像素块之间差异增大，形成类似油画分块上色的卡通效果）
+
+#### Attention？(*)
+
+对于归一化过程，我们可以认为这是一个softmax函数：
+
+$$
+BilateralFilter=softmax(-(F_i-F_j)^2/\sigma)
+$$
+
+我们可以调整filter为具有动态权重的Attention（Attention机制本身就会考虑不同方面的相关性，可以视为广义的Filter）
+
+$$
+Attention(X_q,X_k,X_v)=softmax(\frac{QK^T}{\sqrt{D}})V
+$$
 
 ## Application of Filters应用
 
-## Gaussian Pyramid高斯金字塔
+### 1.Template Matching模板匹配
 
-## Upsampling升采样
+模板匹配最经典的引发是人脸识别，将其转化为一个Template在图像种找最高相似性的问题。
+
+我们将这个Template作为一个Kernel对图像作滤波，亮度最高的位置就是目标位置。
+
+$$
+g(i, j) = \sum_{k, l} f(i + k, j + l) h(k, l)
+$$
+
+为了防止局部像素太大导致错判，我们对结果做一次归一化；
+
+$$
+g(i, j) = \frac{\sum_{k, l} f(i + k, j + l) h(k, l)}{\sqrt{\sum_{k, l} f(i + k, j + l)^2} \sqrt{\sum_{k, l} h(k, l)^2}}
+$$
+
+### 2.Photography with Flash/No-Flash Pair
+
+在昏暗条件下拍摄存在的问题：
+
+- 开闪光灯：明亮、清晰、噪音小，但失去原本光源的信息
+
+- 无闪光灯：保留原光源、更加自然、有氛围，但光线昏暗、缺失细节、噪音大。
+
+能不能将两张图片的优点结合？有的，兄弟有的。下称两张图片为*No-Flash*和*Flash*。
+
+对*No-Flash*作双边滤波时，如果$\sigma_r$太大会造成过度平滑；太小则会导致平滑效果差，不能很好地去噪。但我们不能直接拿带噪音的图像去衡量相似性，调整到不大不小可以，但并不perfect。于是，我们可以想到：拿*Flash*这张无噪声的图片来衡量相似性。
+
+所以我们引入**Joint Bilateral Filter联合双边滤波**：加入另一张图像作为引导图，告诉他哪两个像素很相像：对*No-Flash*作用Domain Kernel、而对*Flash*使用Range Kernel，即距离权重保持不变，但颜色权重使用引导图权重。
+
+（类似Attention中的Cross-Attention）
+
+接下来还需要处理怎么加入细节的问题：因为现在有*Flash*这个无噪点且有细节的图片，我们对*Flash*做一次双边滤波，将原图像各点与滤波后图像作**除法**，得到具有细节信息的图像(Detail Layer)。
+
+（不用减法是因为两个图像色调不一样。提取图像细节的本质是保留甚至扩大对比度对比度信息）
+
+最后将提取到的特征乘到联合双边滤波后的图像上，就可以即保留色调又保留细节。
+
+## Upsampling/Downsampling Pyramids
 
 ## Laplacian Pyramid拉普拉斯金字塔
 
