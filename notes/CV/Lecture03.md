@@ -289,7 +289,9 @@ $$
 
 对*No-Flash*作双边滤波时，如果$\sigma_r$太大会造成过度平滑；太小则会导致平滑效果差，不能很好地去噪。但我们不能直接拿带噪音的图像去衡量相似性，调整到不大不小可以，但并不perfect。于是，我们可以想到：拿*Flash*这张无噪声的图片来衡量相似性。
 
-所以我们引入**Joint Bilateral Filter联合双边滤波**：加入另一张图像作为引导图，告诉他哪两个像素很相像：对*No-Flash*作用Domain Kernel、而对*Flash*使用Range Kernel，即距离权重保持不变，但颜色权重使用引导图权重。
+所以我们引入**Joint Bilateral Filter联合双边滤波**：
+
+加入另一张图像作为引导图，告诉他哪两个像素很相像：对*No-Flash*作用Domain Kernel、而对*Flash*使用Range Kernel，即距离权重保持不变，但颜色权重使用引导图权重。
 
 （类似Attention中的Cross-Attention）
 
