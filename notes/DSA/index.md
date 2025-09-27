@@ -19,3 +19,9 @@
 - 考核方式：平时40 + 考试 60
   平时：作业15 + POJ编程 10 + MOOC 15
   考试：期中20 + 期末25 + POJ机考15
+
+Lecture01：[概论](https://lh314-pku.github.io/notes/DSA/Lecture01)
+
+Lecture02：[线性表](https://lh314-pku.github.io/notes/DSA/Lecture02)
+
+Lecture03：[栈与队列](https://lh314-pku.github.io/notes/DSA/Lecture03)
