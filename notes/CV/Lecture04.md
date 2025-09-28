@@ -1,3 +1,14 @@
+<head>
+   <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+
 # Feature Detection特征检测
 
 ## Edge Detection边缘检测
@@ -51,12 +62,23 @@ $$
    索贝尔边缘检测器通过阈值化梯度大小来获得边缘。但阈值是脆弱的，并且很难选择合适的阈值。
 
 4. **Non-Maximum Suppression非极大抑制**：
-   
 
 ## Corner Detection拐点检测
+
+确定位置时，除了边缘，我们还可以依靠拐角来进一步确定位置。
+
+### Harris角点检测器
+
+一个角可以检测为两个或多个边的交点，关键思想在于通过在移动一个小的局部窗口时测量（边缘方向）变化强度来表征角点。
 
 ## Blobs
 
 ## SIFT Feature
 
+---
 
+高效制备亚铁离子（作者整活）：
+
+$$
+(Fe^{3+})'=3(Fe^{2+})
+$$
