@@ -32,3 +32,5 @@ Lab相较于 CMU_CSAPP 没有不同，分别为：
 
 - [DataLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab1_Datalab)
 - [BombLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab2_Bomblab)
+
+（注：这些笔记面向的是各位PKUer，可能与其他学校存在差异）
