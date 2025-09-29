@@ -140,6 +140,16 @@ echo "set auto-load safe-path /" > ~/.config/gdb/gdbinit
 ```bash
 set args answer.txt
 # 将输入定向到 answer.txt 文件中
+layout asm
+layout regs
+# 分别在终端显示汇编和寄存器的实时详细信息
+# 可选
+b phase_1
+b phase_2
+b phase_3
+b phase_4
+b phase_5
+b phase_6
 # 为每个 phase 打断点，方便调试
 # 每完成一个 phase，就可以注释掉一行。
 ```
@@ -152,11 +162,181 @@ set args answer.txt
 
 - 找到相关代码，再利用 `hexedit` 工具修改二进制码，替换条件跳转指令或者使用 `nop` 无义指令替换危险指令。（有点像AttackLab）
 
-- 另一种则简单得多，就是在对应函数处设置断点，
+- 另一种则简单得多，就是在对应函数处设置断点，并且跳过向服务器发送消息的函数。
+
+下面展示第二种方法：
+
+阅读`bomb.asm`文件，我们可以找到两个函数：`explore_bomb`和`send_msg`。从函数名我们可以猜测这是炸弹爆炸和发送信息的函数，而且在`explore_bomb`函数中的：
+
+```asm6502
+    217c:    e8 55 fe ff ff           call   1fd6 <send_msg>
+```
+
+让我们确定`send_msg`是在`explore_bomb`内调用。所以，我们可以在`.gdbinit`中继续写入：
+
+```bash
+# 为 explode_bomb 中触发 send_msg 函数的地方设置断点
+b *(explode_bomb + 0x44)
+# 为此断点编程
+command
+# 直接跳到 exit 退出函数处，跳过发送信息流程
+j *(explode_bomb + 0x81)
+end
+# 炸弹已经安全化，可以放心地拆弹了，开始运行程序
+r
+```
+
+切记不可轻易将这段代码注释！
+
+现在我们来一次解决这些炸弹：
 
 ## Phase1
 
+在`bomb.asm`中我们可以找到`phase_1`到`phase_6`的函数。先来看看`phase_1`：
+
+```asm6502
+0000000000001784 <phase_1>:
+    1784:    f3 0f 1e fa              endbr64
+    1788:    48 83 ec 08              sub    $0x8,%rsp
+    178c:    48 8d 35 45 2a 00 00     lea    0x2a45(%rip),%rsi        # 41d8 <_IO_stdin_used+0x1d8>
+    1793:    e8 8b 06 00 00           call   1e23 <strings_not_equal>
+    1798:    85 c0                    test   %eax,%eax
+    179a:    75 05                    jne    17a1 <phase_1+0x1d>
+    179c:    48 83 c4 08              add    $0x8,%rsp
+    17a0:    c3                       ret
+    17a1:    e8 92 09 00 00           call   2138 <explode_bomb>
+    17a6:    eb f4                    jmp    179c <phase_1+0x18>
+```
+
+（其实`main`函数也有一部分，不过我觉得不影响，毕竟我打算做的时候都不知道`main`函数里面还有东西。）接下来我们可以逐行解读一下代码：
+
+`endbr64`：无关紧要；
+
+`sub $0x8,%rsp`：将栈指针`%rsp`减`0x8`，即为函数`phase_1`分配栈空间。
+
+`lea 0x2a45(%rip),%rsi`：将`(%rip + 0x2a45)`处存储的值提取到`%rsi`中。
+
+`call 1e23 <strings_not_equal>`：调用`strings_not_equal`函数，比对字符串是否相等。（从`strings_not_equal`可以知道传入的参数在`%rdi`和`%rsi`中）而`%rdi`寄存器在`phase_1`中一直没有修改，也就是在`main`函数中的`%rdi`：保存`read_line`函数的传入值。
+
+`test %eax,%eax`：将 `%eax` 寄存器的值与其自身进行与运算，然后将结果存入 `%eax`。并且同时设置条件码（Condition Code），其中有一个叫做 `ZF` 的标志位，如果 `%eax` 的值为 0，则 `ZF` 为 1，否则为 0。
+
+`jne 17a1 <phase_1+0x1d>`：条件跳转指令，`jne`指令的跳转条件的`~ZF`，如果`%eax`为1（即`strings_not_equal`函数返回`True`，函数返回值均存储在`%rax` / `%eax`中），则`ZF`为 0，程序进行跳转。跳转目标则是位于`17a1`的代码，也就是调用`explode_bomb`函数的地方。
+
+`add $0x8,%rsp`：如果上一条没有跳转，即字符串匹配成功，则回复栈指针的位置，答案通过。
+
+`ret`：返回，退出函数。
+
+`add  $0x8,%rsp`：同上。
+
+综上，我们可以得到`phase_1`的基本逻辑：输入一个字符串并存储在`%rdi`中，并与`(%rip + 0x2a45)`处存储的值对比。两者匹配则不会爆炸，炸弹解除。
+
+那么，解决的办法也就很清晰了：找到`(%rip + 0x2a45)`处存储的值。
+
+我们在`answer.txt`中随便写一行：
+
+```textile
+pku is better than thu
+```
+
+然后在终端输入：
+
+```bash
+gdb bomb
+```
+
+之后终端会有如下内容：
+
+```bash
+Reading symbols from bomb...
+Breakpoint 1 at 0x1784
+Breakpoint 2 at 0x17a8
+Breakpoint 3 at 0x181a
+Breakpoint 4 at 0x19da
+Breakpoint 5 at 0x1a59
+Breakpoint 6 at 0x1aec
+Breakpoint 7 at 0x217c
+...
+Welcome to Mr.Gin's little bomb. You have 6 phases with
+which to blow yourself up. Have a nice day! Mua ha ha ha!
+
+Breakpoint 1, 0x0000555555555784 in phase_1 ()
+(gdb) 
+```
+
+此时，程序停止在了我们设置的第一个断点处，也就是`phase_1`的第一行。而我们需要查询的值在第三行，所以我们继续输入：
+
+```bash
+ni
+ni
+ni
+x/s $rip + 0x2a45
+# 以C风格字符串打印(%rip + 0x2a45)处存储的值
+```
+
+然后我们可以看到：
+
+```bash
+(gdb) x/s $rip + 0x2a45
+0x5555555581d8: "A secret makes a woman a woman"
+```
+
+所以我们就可以确定我们的答案就是`A secret makes a woman a woman`。
+
+先输入`q`退出调试，然后在`answer.txt`中写入这个字符串，再次打开`gdb`，运行：
+
+```bash
+c
+Breakpoint 1, 0x0000555555555784 in phase_1 ()
+(gdb) c
+Continuing.
+Phase 1 defused. How about the next one?
+
+Breakpoint 2, 0x00005555555557a8 in phase_2 ()
+(gdb) 
+```
+
+我们就完成了`phase_1`。（可喜可贺，可喜可贺~）
+
 ## Phase2
+
+```asm6502
+00000000000017a8 <phase_2>:
+    17a8:	f3 0f 1e fa          	endbr64
+    17ac:	53                   	push   %rbx
+    17ad:	48 83 ec 20          	sub    $0x20,%rsp
+    17b1:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
+    17b8:	00 00 
+    17ba:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+    17bf:	31 c0                	xor    %eax,%eax
+    17c1:	48 89 e6             	mov    %rsp,%rsi
+    17c4:	e8 f5 09 00 00       	call   21be <read_six_numbers>
+    17c9:	83 3c 24 00          	cmpl   $0x0,(%rsp)
+    17cd:	78 07                	js     17d6 <phase_2+0x2e>
+    17cf:	bb 01 00 00 00       	mov    $0x1,%ebx
+    17d4:	eb 0a                	jmp    17e0 <phase_2+0x38>
+    17d6:	e8 5d 09 00 00       	call   2138 <explode_bomb>
+    17db:	eb f2                	jmp    17cf <phase_2+0x27>
+    17dd:	83 c3 01             	add    $0x1,%ebx
+    17e0:	83 fb 05             	cmp    $0x5,%ebx
+    17e3:	7f 1a                	jg     17ff <phase_2+0x57>
+    17e5:	48 63 c3             	movslq %ebx,%rax
+    17e8:	8d 53 ff             	lea    -0x1(%rbx),%edx
+    17eb:	48 63 d2             	movslq %edx,%rdx
+    17ee:	89 d9                	mov    %ebx,%ecx
+    17f0:	03 0c 94             	add    (%rsp,%rdx,4),%ecx
+    17f3:	39 0c 84             	cmp    %ecx,(%rsp,%rax,4)
+    17f6:	74 e5                	je     17dd <phase_2+0x35>
+    17f8:	e8 3b 09 00 00       	call   2138 <explode_bomb>
+    17fd:	eb de                	jmp    17dd <phase_2+0x35>
+    17ff:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
+    1804:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
+    180b:	00 00 
+    180d:	75 06                	jne    1815 <phase_2+0x6d>
+    180f:	48 83 c4 20          	add    $0x20,%rsp
+    1813:	5b                   	pop    %rbx
+    1814:	c3                   	ret
+    1815:	e8 86 fa ff ff       	call   12a0 <__stack_chk_fail@plt>
+```
 
 ## Phase3
 
@@ -166,7 +346,7 @@ set args answer.txt
 
 ## Phase6
 
-```asm
+```asm6502
 000000000001aec <phase_6>:
     1aec:    f3 0f 1e fa              endbr64
     1af0:    41 54                    push   %r12
