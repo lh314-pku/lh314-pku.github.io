@@ -20,6 +20,10 @@
 
 [Lecture01&02](https://lh314-pku.github.io/notes/CV/Lecture01&02)
 
+[Lecture03](https://lh314-pku.github.io/notes/CV/Lecture03)
+
+[Lecture04](https://lh314-pku.github.io/notes/CV/Lecture04)
+
 # CS231n
 
 Stanford 的 CV 入门课，由计算机领域的巨佬李飞飞院士领衔教授（CV 领域划时代的著名数据集 ImageNet 的研究团队），但其内容相对基础且友好，如果上过 CS230 的话可以直接上手 Project 作为练习。

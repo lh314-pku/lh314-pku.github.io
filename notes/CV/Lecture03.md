@@ -303,6 +303,58 @@ $$
 
 ## Upsampling/Downsampling Pyramids
 
-## Laplacian Pyramid拉普拉斯金字塔
+上采样/下采样：宏观上可以理解为在保证图像可视（即没有噪点、锯齿等因素）的条件下放大缩小图像（即改变分辨率）。
+
+### Subsampling（其实就是Downsampling）
+
+当采样率不足时，会出现 **“走样”Aliasing**，导致图像细节缺失。为了解决走样问题，我们首先需要将图像的高频消息滤除。而高斯滤波就可以平滑高频信息。（又称低通滤波）
+
+> 在信号处理领域（包括图像处理），频率表示信号变化的速率：
+> 
+> - **低频信息：** 信号变化缓慢，例如大面积的均匀颜色、渐变的区域。代表图像的整体结构或全局信息。
+> - **高频信息：** 信号变化快，例如图像中的边缘轮廓、复杂的纹理、噪声等。高频信息决定了图像的细节。
+
+### Gaussian Pyramid高斯金字塔
+
+从原图像出发，每进行一次模糊（高斯滤波）+ 一次下采样，即得金字塔的下一层。
+
+**example**：Detection人脸检测
+
+例如，对于一个M x M的人脸模板，需要在N x N的图片上匹配，将模板逐步放大后进行滤波比较的计算开销太大，于是可以将图像做高斯金字塔，并以此进行模板匹配。
+
+### Upsampling升采样
+
+升采样最简单的想法是 **“Nearest neighbor interpolation”最近邻插值**，即直接将最近的像素复制过去。但是这样得到的结果并不平滑。
+
+> **Interpotion插值**：
+> 
+> 插值是一种基于一组已知离散数据点来构造（或寻找）新的数据点的方法。
+> 
+> $$
+> g(x)=\sum_kc_ku(\frac{x-x_k}{h})
+> $$
+> 
+> - $g$：插值函数
+> - $h$：采样增量
+> - $x_k$：插值节点
+> - $c_k$​：基于采样数据计算得到的参数
+> - $u$：插值核（interpotion kernel）
+>   $u(0)=1$，否则$u(k)=1$
+
+例如使用box filter作为$u$，就可以对应到**最近邻插值**。但是得到的结果并不连续；
+
+改进后我们可以使用**线性插值**作为$u$，得到的函数是$C^0$连续的。但是在原函数采样点处仍然不连续；
+
+继续改进后就得到了**Cubic插值**，得到的函数是$C^1$连续的。其插值范围是$[-2,2]$，具体推导（反正就是待定系数法）见下：
+
+[image1](https://lh314-pku.github.io/notes/CV/images/interpotion.png)
+
+[image2](https://lh314-pku.github.io/notes/CV/images/cubic1.png)
+
+[image3](https://lh314-pku.github.io/notes/CV/images/cubic2.png)
+
+
+
+### Laplacian Pyramid拉普拉斯金字塔
 
 ## Transformation变形
