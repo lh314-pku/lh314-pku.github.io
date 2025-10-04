@@ -347,11 +347,26 @@ $$
 
 继续改进后就得到了**Cubic插值**，得到的函数是$C^1$连续的。其插值范围是$[-2,2]$，具体推导（反正就是待定系数法）见下：
 
-![image1](https://lh314-pku.github.io/notes/CV/images/interpotion.png)
+<img title="" src="https://lh314-pku.github.io/notes/CV/images/interpotion.png" alt="image1" width="648" data-align="center">
 
-![image2](https://lh314-pku.github.io/notes/CV/images/cubic1.png)
+<img title="" src="https://lh314-pku.github.io/notes/CV/images/cubic1.png" alt="image2" width="659" data-align="center">
 
-![image3](https://lh314-pku.github.io/notes/CV/images/cubic2.png)
+<img title="" src="https://lh314-pku.github.io/notes/CV/images/cubic2.png" alt="image3" data-align="center" width="668">
+
+对于图像插值，就是在某个方向上插值，将得到的结果在另一个方向上再次插值。所以，图像插值需要附近的4个点。
+
+而像素对齐的方式，也会极大的影响插值效果。使用pytorch进行图像处理时，可以选择角点对齐的形式，如下：
+
+![image4](https://lh314-pku.github.io/notes/CV/images/align.png)
+
+**近似(Approximation)** 和 **插值(Interpotion)** 的区别在于，插值对于所需的函数有一定要求。他要求函数在目标点处为1，其他地方为0；但近似并不要求结果函数结果采样点，例如：
+
+$$
+g(x) = \frac{\sum_k c_k u\left(\frac{x - x_k}{h}\right)}{\sum_k u\left(\frac{x - x_k}{h}\right)}
+,u(x) > 0
+$$
+
+### Joint Bilateral Upsampling联合双边上采样
 
 
 
