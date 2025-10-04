@@ -245,7 +245,7 @@ return sum;
 
 存储器层次结构中，每一级都包含从下一低级层次所检索的数据。
 
-[image](https://pic4.zhimg.com/v2-8206a1d433ac8108bacff70573348303_r.jpg)
+![image](https://pic4.zhimg.com/v2-8206a1d433ac8108bacff70573348303_r.jpg)
 
 ### Caches高速缓存
 

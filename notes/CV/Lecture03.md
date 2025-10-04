@@ -347,11 +347,11 @@ $$
 
 继续改进后就得到了**Cubic插值**，得到的函数是$C^1$连续的。其插值范围是$[-2,2]$，具体推导（反正就是待定系数法）见下：
 
-[image1](https://lh314-pku.github.io/notes/CV/images/interpotion.png)
+![image1](https://lh314-pku.github.io/notes/CV/images/interpotion.png)
 
-[image2](https://lh314-pku.github.io/notes/CV/images/cubic1.png)
+![image2](https://lh314-pku.github.io/notes/CV/images/cubic1.png)
 
-[image3](https://lh314-pku.github.io/notes/CV/images/cubic2.png)
+![image3](https://lh314-pku.github.io/notes/CV/images/cubic2.png)
 
 
 

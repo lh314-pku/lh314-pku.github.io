@@ -12,7 +12,7 @@ Cache缓存是小型的、由高速SRAM实现的存储结构，完全由硬件�
 
 **Cache Size = S * E * B**（组、行、块）
 
-[image](https://pic1.zhimg.com/80/v2-0fa71edb0f43ac513a2081ab04c5f6de_1440w.webp?source=1def8aca)
+![image](https://pic1.zhimg.com/80/v2-0fa71edb0f43ac513a2081ab04c5f6de_1440w.webp?source=1def8aca)
 
 ### 2.Cache Read
 
@@ -121,7 +121,7 @@ Inter系统的L3缓存是16组相联，其他大多为8路。
 
 **Memory mountain存储器山**：根据空间局部性和时间局部性测量读取吞吐量。是一种紧凑的方法，用于表征内存系统性能。其将该存储系统的性能在该范围内作为二维函数绘制出来。（参考课本封面）
 
-[aaa](https://pic2.zhimg.com/v2-9138e6ee2de307d51925388b2f6ff952_r.jpg)
+![aaa](https://pic2.zhimg.com/v2-9138e6ee2de307d51925388b2f6ff952_r.jpg)
 
 其中：
 
@@ -237,5 +237,3 @@ void mmm(double *a, double *b, double *c, int n) {
 即将大矩阵分隔为更小的子矩阵后分别相乘。（线性代数告诉我们，分块矩阵乘法与原矩阵乘法等效）B = 1时即为原算法，其中保证了3B^2 < C。
 
 这样总的未命中数为：n^3 / (4B)！
-
-
