@@ -6,6 +6,10 @@ AI工具集：[AI工具集官网 | 1000+ AI工具集合，国内外AI工具集�
 
 AI评分排行榜：[AI大模型评测榜单](https://www.datalearner.com/leaderboards)
 
+Sora：[Sora](https://sora.chatgpt.com/explore/videos)
+
+ChatGPT：[ChatGPT](https://chatgpt.com/)
+
 AI伦理概述（原文）：[人工智能伦理(AI Ethics)概述 - 知乎](https://zhuanlan.zhihu.com/p/559089185)
 
 ### 本节作业：

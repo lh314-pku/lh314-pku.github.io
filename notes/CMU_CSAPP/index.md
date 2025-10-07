@@ -40,7 +40,7 @@
 
 [Lecture11](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture11)：The Memory Hierarchy
 
-Lecture12：Cache Memories
+[Lecture12](https://lh314-pku.github.io/notes/CMU_CSAPP/Lecture12)：Cache Memories
 
 Lecture13：Linking
 
