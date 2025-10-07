@@ -217,7 +217,7 @@ void mmm(double *a, double *b, double *c, int n) {
 
 加入阻塞后，有如下代码：
 
-```c {.line-numbers}
+```c
 c = (double *) calloc(sizeof(double), n*n);
 
 /* Multiply n x n matrices a and b */
