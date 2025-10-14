@@ -368,8 +368,6 @@ $$
 
 ### Joint Bilateral Upsampling联合双边上采样
 
-
-
 ### Laplacian Pyramid拉普拉斯金字塔
 
 ## Transformation变形
