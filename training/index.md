@@ -17,3 +17,12 @@ AI基础与工具概览。
 ## Chapter5
 
 ## Chapter6
+
+<script src="https://utteranc.es/client.js"
+        repo="lh314-pku/lh314-pku.github.io"
+        issue-term="pathname"
+        label="Commend"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
