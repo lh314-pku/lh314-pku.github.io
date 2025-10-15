@@ -25,3 +25,14 @@
 [PKU：Computer Vision](https://lh314-pku.github.io/notes/CV/index)
 
 [PKU：Data Structure and Algorithm](https://lh314-pku.github.io/notes/DSA/index)
+
+---
+
+<script src="https://utteranc.es/client.js"
+        repo="lh314-pku/lh314-pku.github.io"
+        issue-term="pathname"
+        label="Commend"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
