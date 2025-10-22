@@ -12,7 +12,7 @@
 
 期中之前的进度相当于 CMU_CSAPP 课程的 Lecture12：Cache Memories。
 
-Lab相较于 CMU_CSAPP 没有不同，分别为：
+Lab相较于 CMU_CSAPP 没有不同（反而多了一个ArchLab），分别为：
 
 **一、程序与数据**：DataLab位级数据操作实验、BombLab拆解二进制炸弹实验、AttackLab缓冲区溢出炸弹
 
@@ -32,5 +32,7 @@ Lab相较于 CMU_CSAPP 没有不同，分别为：
 
 - [DataLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab1_Datalab)
 - [BombLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab2_Bomblab)
+- [AttackLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab3_Attacklab)
+- [ArchLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab4_Archlab)
 
 （注：这些笔记面向的是各位PKUer，可能与其他学校存在差异）
