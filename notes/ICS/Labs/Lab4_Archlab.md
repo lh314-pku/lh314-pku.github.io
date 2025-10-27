@@ -71,8 +71,20 @@ release版本同样可以使用，运行`cargo build --release`可以在`target/
 
 （或者阅读中文版[README](https://lh314-pku.github.io/notes/ICS/Labs/Lab4_README)）
 
+最后可以分别运行一下三个指令对三个阶段评分：
+
+```bash
+./target/debug/grader part-a
+```
+
+```bash
+./target/debug/grader part-b
+```
+
+```bash
+./target/debug/grader part-c
+```
+
 ## Part A
 
 在`archlab-project/misc`目录下工作，编写三个 Y86-64 程序。
-
-

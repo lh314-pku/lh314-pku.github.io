@@ -301,41 +301,41 @@ Breakpoint 2, 0x00005555555557a8 in phase_2 ()
 
 ```asm6502
 00000000000017a8 <phase_2>:
-    17a8:	f3 0f 1e fa          	endbr64
-    17ac:	53                   	push   %rbx
-    17ad:	48 83 ec 20          	sub    $0x20,%rsp
-    17b1:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
-    17b8:	00 00 
-    17ba:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
-    17bf:	31 c0                	xor    %eax,%eax
-    17c1:	48 89 e6             	mov    %rsp,%rsi
-    17c4:	e8 f5 09 00 00       	call   21be <read_six_numbers>
-    17c9:	83 3c 24 00          	cmpl   $0x0,(%rsp)
-    17cd:	78 07                	js     17d6 <phase_2+0x2e>
-    17cf:	bb 01 00 00 00       	mov    $0x1,%ebx
-    17d4:	eb 0a                	jmp    17e0 <phase_2+0x38>
-    17d6:	e8 5d 09 00 00       	call   2138 <explode_bomb>
-    17db:	eb f2                	jmp    17cf <phase_2+0x27>
-    17dd:	83 c3 01             	add    $0x1,%ebx
-    17e0:	83 fb 05             	cmp    $0x5,%ebx
-    17e3:	7f 1a                	jg     17ff <phase_2+0x57>
-    17e5:	48 63 c3             	movslq %ebx,%rax
-    17e8:	8d 53 ff             	lea    -0x1(%rbx),%edx
-    17eb:	48 63 d2             	movslq %edx,%rdx
-    17ee:	89 d9                	mov    %ebx,%ecx
-    17f0:	03 0c 94             	add    (%rsp,%rdx,4),%ecx
-    17f3:	39 0c 84             	cmp    %ecx,(%rsp,%rax,4)
-    17f6:	74 e5                	je     17dd <phase_2+0x35>
-    17f8:	e8 3b 09 00 00       	call   2138 <explode_bomb>
-    17fd:	eb de                	jmp    17dd <phase_2+0x35>
-    17ff:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
-    1804:	64 48 2b 04 25 28 00 	sub    %fs:0x28,%rax
-    180b:	00 00 
-    180d:	75 06                	jne    1815 <phase_2+0x6d>
-    180f:	48 83 c4 20          	add    $0x20,%rsp
-    1813:	5b                   	pop    %rbx
-    1814:	c3                   	ret
-    1815:	e8 86 fa ff ff       	call   12a0 <__stack_chk_fail@plt>
+    17a8:    f3 0f 1e fa              endbr64
+    17ac:    53                       push   %rbx
+    17ad:    48 83 ec 20              sub    $0x20,%rsp
+    17b1:    64 48 8b 04 25 28 00     mov    %fs:0x28,%rax
+    17b8:    00 00 
+    17ba:    48 89 44 24 18           mov    %rax,0x18(%rsp)
+    17bf:    31 c0                    xor    %eax,%eax
+    17c1:    48 89 e6                 mov    %rsp,%rsi
+    17c4:    e8 f5 09 00 00           call   21be <read_six_numbers>
+    17c9:    83 3c 24 00              cmpl   $0x0,(%rsp)
+    17cd:    78 07                    js     17d6 <phase_2+0x2e>
+    17cf:    bb 01 00 00 00           mov    $0x1,%ebx
+    17d4:    eb 0a                    jmp    17e0 <phase_2+0x38>
+    17d6:    e8 5d 09 00 00           call   2138 <explode_bomb>
+    17db:    eb f2                    jmp    17cf <phase_2+0x27>
+    17dd:    83 c3 01                 add    $0x1,%ebx
+    17e0:    83 fb 05                 cmp    $0x5,%ebx
+    17e3:    7f 1a                    jg     17ff <phase_2+0x57>
+    17e5:    48 63 c3                 movslq %ebx,%rax
+    17e8:    8d 53 ff                 lea    -0x1(%rbx),%edx
+    17eb:    48 63 d2                 movslq %edx,%rdx
+    17ee:    89 d9                    mov    %ebx,%ecx
+    17f0:    03 0c 94                 add    (%rsp,%rdx,4),%ecx
+    17f3:    39 0c 84                 cmp    %ecx,(%rsp,%rax,4)
+    17f6:    74 e5                    je     17dd <phase_2+0x35>
+    17f8:    e8 3b 09 00 00           call   2138 <explode_bomb>
+    17fd:    eb de                    jmp    17dd <phase_2+0x35>
+    17ff:    48 8b 44 24 18           mov    0x18(%rsp),%rax
+    1804:    64 48 2b 04 25 28 00     sub    %fs:0x28,%rax
+    180b:    00 00 
+    180d:    75 06                    jne    1815 <phase_2+0x6d>
+    180f:    48 83 c4 20              add    $0x20,%rsp
+    1813:    5b                       pop    %rbx
+    1814:    c3                       ret
+    1815:    e8 86 fa ff ff           call   12a0 <__stack_chk_fail@plt>
 ```
 
 ## Phase3
