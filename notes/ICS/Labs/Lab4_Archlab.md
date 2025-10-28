@@ -88,8 +88,7 @@ release版本同样可以使用，运行`cargo build --release`可以在`target/
 以及最后你可以运行以下指令来为整个项目评分：
 
 ```bash
-cd archlab-project
-cargo run --bin grader
+./target/debug/grader autolab
 ```
 
 ## Part A（5 * 3 = 15 pts）
@@ -112,6 +111,8 @@ cargo run --bin grader
 
 ## Part C（60 pts）
 
+### 任务
+
 工作目录就是前两个任务的文件夹：`archlab-project/misc`和`archlab-project/sim/src/architectures/extra`。
 
 你需要操作并提交的文件：
@@ -132,3 +133,126 @@ cargo run --bin grader
 - ncopy 组装版本的尺寸加上栈大小限制在 4Kb。（实际上略小于 4Kb，你可以查看评分器代码以获取确切值）我们将在调用你的 ncopy 之前设置好栈寄存器和参数寄存器。
 
 除此之外，如果你认为其他指令会更有帮助，你可以自由地实现它们。你可以对 ncopy 函数进行任何保持语义的转换，例如重新排序指令、用单个指令替换指令组、删除某些指令以及添加其他指令。
+
+### 评分
+
+Part C 的评分将基于实现的 CPE 和 AC 来评估性能。
+
+- CPE：cycles per element，如果代码需要 C 个周期来复制一个包含 N 个元素的块，则 CPE = C / N。
+
+- AC：architecture cost，即ncopy函数和架构的关键路径长度。形式上 CPU 架构的 AC 等于其时钟元件之间组合逻辑的最长长度。本实验中简化为：1 + 架构中路径上排列的最大硬件设备（单元）数量。
+
+由于一些周期用于设置 ncopy 的调用和设置 ncopy 内的循环，你会发现对于不同的块长度，你会得到不同的 cpe 值（通常随着 N 的增加，cpe 会下降）。因此，我们将通过计算从 1 到 64 个元素的范围内的 cpe 的平均值来评估你的函数的性能。
+
+你可以运行以下指令来获得CPE：
+
+```bash
+cd archlab-project
+cargo run--bin grader-- part-c
+```
+
+以及如下指令来来检查架构的关键路径长度和设备执行顺序。此命令还会生成一个可视化架构依赖图的 HTML 文件。
+
+以下是一个简单的评分器（评分原则）：
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .container button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .container button:hover {
+            background-color: #45a049;
+        }
+        .container p {
+            font-size: 18px;
+            text-align: center;
+            margin-top: 15px;
+            color: #4caf50;
+        }
+    </style>
+    <script>
+        function calculateScore() {
+            // 获取用户输入的CPE和AC
+            let cpe = parseFloat(document.getElementById("cpe").value);
+            let ac = parseFloat(document.getElementById("ac").value);
+
+            // 计算c
+            let c = cpe + 2 * ac;
+            let score;
+
+            // 根据公式计算S得分
+            if (c > 19.0) {
+                score = 0;
+            } else if (c > 16.0 && c <= 19.0) {
+                score = 19 * (19.0 - c);
+            } else if (c > 15.0 && c <= 16.0) {
+                score = 57;
+            } else {
+                score = 60;
+            }
+
+            // 显示得分
+            document.getElementById("result").innerText = `您的得分 S 为: ${score}`;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <label for="cpe">请输入 CPE:</label>
+        <input type="number" id="cpe" placeholder="输入 CPE">
+        
+        <label for="ac">请输入 AC:</label>
+        <input type="number" id="ac" placeholder="输入 AC">
+        
+        <button onclick="calculateScore()">计算得分</button>
+        <p id="result"></p>
+    </div>
+</body>
+</html>
+
+    <p id="result"></p>
+</body>
+</html>
