@@ -85,6 +85,33 @@ release版本同样可以使用，运行`cargo build --release`可以在`target/
 ./target/debug/grader part-c
 ```
 
-## Part A
+## Part A（5 * 3 = 15 pts）
 
 在`archlab-project/misc`目录下工作，编写三个 Y86-64 程序。
+
+## Part B（4 + 3 * 7 = 25 pts）
+
+在`archlab-project/sim/src/architectures/extra`目录下工作，完成两个阶段任务~~（助教gg太肝了，求求你下次不要更新这么多任务了）~~。
+
+### B.1（4 pts）
+
+在 SEQ 架构下添加 IOPQ 指令，参考 OPQ 和 IRMOVQ 即可。
+
+### B.2（3 * 7 pts）
+
+以 `pipe-s2` 为基础架构，依次实现`pipe-s3a`、`pipe-s3b`、`pipe-s3c`、`pipe-s3d`、`pipe-s4a`、`pipe-s4b`、`pipe-s4c`多个层级的流水线架构，实现数据转发、暂停Stall、气泡Bubble 的逻辑实现（load-use冒险、数据冒险、跳转预测错误等），并优化其架构。
+
+有一说一，做起来真的很痛苦。网络上没有答案，AI 也得不到正确的答案，每天啃书、调试、做笔记……最后一个人做完整个Lab。但是有一说一，现在确实对流水线的原理理解更加深入了。
+
+## Part C（60 pts）
+
+工作目录就是前两个任务的文件夹：`archlab-project/misc`和`archlab-project/sim/src/architectures/extra`。
+
+你需要操作并提交的文件：
+
+- `archlab-project/misc/ncopy.ys`：函数`ncopy`的 Y86-64 汇编文件；
+
+- `archlab-project/sim/src/architectures/extra/ncopy.rs`：`ncopy`函数运行的 CPU 架构。
+
+`ncopy`函数将`len`个元素整数数组`src`复制到不重叠的`dst`，返回计数
+`src`中包含的正整数的数量。`ncopy` 的 C 描述在 `misc/ncopy.c` 中。
