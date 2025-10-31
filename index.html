@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>主页</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="预览"></div>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+            fetch('README.md')
+            .then(response => response.text())
+            .then(markdown => {
+                const htmlContent = marked(markdown);
+                document.getElementById('preview').innerHTML = htmlContent;
+            })
+            .catch(error => console.error('Loading error......', error));
+        </script>
+    </body>
+</html>

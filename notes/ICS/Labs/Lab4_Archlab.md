@@ -4,7 +4,7 @@
 
 > ⚠️ 致各位同学：
 > 
-> **本笔记的目的是借鉴交流，而非仅仅提供答案，请勿抄袭，后果自负。**
+> **本笔记的目的是借鉴交流，而非仅仅提供答案，<font color='red'>请勿抄袭，后果自负。</font>**
 > 
 > 你可以参考我的想法、了解有哪些注意的地方，但是在自己实现的时候不要参考，避免抄袭。
 
@@ -109,6 +109,8 @@ release版本同样可以使用，运行`cargo build --release`可以在`target/
 
 有一说一，做起来真的很痛苦。网络上没有答案，AI 也得不到正确的答案，每天啃书、调试、做笔记……最后一个人做完整个Lab。但是有一说一，现在确实对流水线的原理理解更加深入了。
 
+另外，做完才发现可以参考`archlab-project/sim/src/architectures/builtin/pipe_std.rs`作为参考（）
+
 ## Part C（60 pts）
 
 ### 任务
@@ -148,111 +150,89 @@ Part C 的评分将基于实现的 CPE 和 AC 来评估性能。
 
 ```bash
 cd archlab-project
-cargo run--bin grader-- part-c
+cargo run --bin grader -- part-c
 ```
 
-以及如下指令来来检查架构的关键路径长度和设备执行顺序。此命令还会生成一个可视化架构依赖图的 HTML 文件。
+以及如下指令来来检查架构的关键路径长度和设备执行顺序。此命令还会生成一个可视化架构依赖图的 HTML 文件。（该HTML文件的解读参考树洞6835391）
 
-以下是一个简单的评分器（评分原则）：
+未优化：
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Score Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        .container label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .container button {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-        .container button:hover {
-            background-color: #45a049;
-        }
-        .container p {
-            font-size: 18px;
-            text-align: center;
-            margin-top: 15px;
-            color: #4caf50;
-        }
-    </style>
-    <script>
-        function calculateScore() {
-            // 获取用户输入的CPE和AC
-            let cpe = parseFloat(document.getElementById("cpe").value);
-            let ac = parseFloat(document.getElementById("ac").value);
+```bash
+Part C: all tests passed, cpe: 12.816715740854239, arch cost: 8, score: 0.0000
+```
 
-            // 计算c
-            let c = cpe + 2 * ac;
-            let score;
+### Test1：引入 IOPQ
 
-            // 根据公式计算S得分
-            if (c > 19.0) {
-                score = 0;
-            } else if (c > 16.0 && c <= 19.0) {
-                score = 19 * (19.0 - c);
-            } else if (c > 15.0 && c <= 16.0) {
-                score = 57;
-            } else {
-                score = 60;
-            }
+```bash
+Part C: all tests passed, cpe: 10.278974347279133, arch cost: 8, score: 0.0000
+```
 
-            // 显示得分
-            document.getElementById("result").innerText = `您的得分 S 为: ${score}`;
-        }
-    </script>
-</head>
-<body>
-    <div class="container">
-        <label for="cpe">请输入 CPE:</label>
-        <input type="number" id="cpe" placeholder="输入 CPE">
-        
-        <label for="ac">请输入 AC:</label>
-        <input type="number" id="ac" placeholder="输入 AC">
-        
-        <button onclick="calculateScore()">计算得分</button>
-        <p id="result"></p>
-    </div>
-</body>
-</html>
+难绷删掉`xorq %rax,%rax`还快了一点
 
-    <p id="result"></p>
-</body>
-</html>
+```bash
+Part C: all tests passed, cpe: 10.20485105190873, arch cost: 8, score: 0.0000
+```
+
+### Test2：更换流水线架构
+
+使用`pipe_s4c`架构（cost变少了，但是CPE上升了难绷）：
+
+```bash
+Part C: all tests passed, cpe: 12.94744349739257, arch cost: 4, score: 0.0000
+```
+
+使用`pipe_s3d`架构：
+
+```bash
+Part C: all tests passed, cpe: 11.11320892233585, arch cost: 6, score: 0.0000
+```
+
+使用`pipe_s2`架构：
+
+```bash
+Part C: all tests passed, cpe: 10.278974347279133, arch cost: 7, score: 0.0000
+```
+
+暂时考虑使用pipe_s2。
+
+### Test3：循环展开+三叉树
+
+使用7重循环展开，并用三叉树分治查找处理：
+
+（代码位于test.txt）
+
+```bash
+Part C: all tests passed, cpe: 8.285855145597921, arch cost: 4, score: 51.5688
+```
+
+由于在`pipe_s4c`下可以得到最小的 AC = 4，想要优化只有两个方向：
+
+- 在`pipe_s4c`基础上加入W寄存器，将 AC 降到3；
+
+- 继续优化程序直到 cpe <= 7。
+
+将ncopy中的rmmovq移动到遍历前：
+
+```bash
+cpe: 8.17039042028987, arch cost: 4, score: 53.7626
+```
+
+去除一些不必要的跳转：
+
+```bash
+cpe: 8.115253726514984, arch cost: 4, score: 54.8102
+```
+
+提前一些MOV指令：
+
+```bash
+cpe: 8.027731840398008, arch cost: 4, score: 56.4731
+```
+
+其他想法：8重展开？跳转表？
+
+在pipe_std架构上，将 reg_cc 和 cond 的计算并行，将 ac 降到 3。
+
+```bash
+Part C: all tests passed, cpe: 8.175978431138818, arch cost: 3, score: 60.0000
+```
