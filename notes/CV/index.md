@@ -18,11 +18,15 @@
 > 
 > 第三部分介绍深度学习在计算机视觉中的应用，包括卷积神经网络、循环神经网络、生成对抗网络等。本课程旨在帮助学生掌握计算机视觉的基本理论和方法，培养学生的计算机视觉分析和应用能力。
 
-[Lecture01&02](https://lh314-pku.github.io/notes/CV/Lecture01&02)
+[Lecture01&02](https://lh314-pku.github.io/notes/CV/Lecture01&02)：Overview & 图像生成
 
-[Lecture03](https://lh314-pku.github.io/notes/CV/Lecture03)
+[Lecture03](https://lh314-pku.github.io/notes/CV/Lecture03)：图像处理
 
-[Lecture04](https://lh314-pku.github.io/notes/CV/Lecture04)
+[Lecture04](https://lh314-pku.github.io/notes/CV/Lecture04)：特征检测
+
+[Lecture05](https://lh314-pku.github.io/notes/CV/Lecture05)：图像拼接
+
+[Lecture06](https://lh314-pku.github.io/notes/CV/Lecture06)：相机标定
 
 # CS231n
 
