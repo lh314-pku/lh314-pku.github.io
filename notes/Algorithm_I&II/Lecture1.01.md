@@ -51,5 +51,3 @@
 ## Result
 
 **WQUPC（Weighted Quick-Union with Path Conpression）带权路径压缩并查集**是目前最优的并查集首先算法之一。实际应用中可以认为其时间复杂度为常数级。
-
-

@@ -350,6 +350,68 @@ $$
 
 插入、删除最小值，删除普通节点的平均和最差时间都是$O(\log n)$
 
+### 建堆--筛选法
+
+思路：向下调整节点，将大的节点向下筛选，小的节点向上筛选，最终得到一个有序的堆（另一种方法是向上调整）
+
+流程：
+
+1. 对于初始的数组/完全二叉树，从**最后一个非叶子节点**（人话：倒数第二层最右边的非叶子节点）开始，逐步向上执行筛选操作；
+
+2. 如果父节点与左右子节点不满足最小堆性质，就将父节点与较小的子节点交换。
+
+3. 继续递归调整，直到堆的结构满足最小堆性质。
+
+算法实现：
+
+```python
+build(array):
+    n = array.length()
+    for (int i = n / 2 - 1; i >= 0; i--):
+        SiftDown(array, i, n)
+    # 对于顺序结构存储的二叉树，最后一个非叶子节点就是 n//2-1的位置
+    # 对 i 个节点（及其左右节点）进行递归调整（为了保子树）
+SiftDown(array, index, n):
+    smallest = index
+    left = 2 * index + 1
+    right = 2 * index + 2
+    if (right < n and array[right] < array[index])
+        smallest = right
+    if (left < n and array[left] < array[index])
+        smallest = left
+    # 查找是否满足最小堆性质，并查找较小的子节点
+    if smallest != index:
+        # 如果不满足最小堆性质，递归调整使之满足性质
+        SWAP(array[index], array[smallest])
+        SiftDown(array, smallest, n)
+```
+
+时间复杂度：$O(n)$（注，向上调整法的时间复杂度为$O(n\log n)$）
+
+### 插入
+
+新元素加入末尾，然后向上更新：
+
+```python
+Insect(array, val):
+    array.append(val)
+    Siftup(array)
+
+Siftup(array):
+    index = array.size() - 1
+    while(index > 0):
+        parent = (i - 1) // 2
+        if array[index] < array[parent]
+            SWAP(array[index], array[parent])
+            index = parent
+        else
+            break
+```
+
+### 删除
+
+将待删除元素与最后一个元素互换，弹出元素后向上/向下更新。
+
 ## 6. Huffman树
 
 - 等长编码：字符使用频率相同

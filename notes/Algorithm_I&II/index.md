@@ -39,5 +39,3 @@ Coursera算法课中评分最高的课程，教授讲的内容从一个想法出
 #### Algorithm Part.1
 
 [Lecture01](https://lh314-pku.github.io/notes/Algorithm_I&II/Lecture1.01)
-
-

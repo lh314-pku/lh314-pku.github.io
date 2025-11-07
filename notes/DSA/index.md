@@ -32,6 +32,8 @@ Lecture05：[二叉树](https://lh314-pku.github.io/notes/DSA/Lecture05)
 
 Lecture06：[树](https://lh314-pku.github.io/notes/DSA/Lecture06)
 
+（由于中期退课，将无限期停更）
+
 ---
 
 广告：[Coursera:Algorithm I&II](https://lh314-pku.github.io/notes/Algorithm_I&II)
