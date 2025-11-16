@@ -18,7 +18,7 @@ AI势必是下一个时代不可或缺的技术手段，所以我们更需要知
 
 AI基础与工具概览。
 
-## Chapter2
+## [Chapter2](https://lh314-pku.github.io/training/Chapter2)
 
 接口、API介绍以及调用
 
