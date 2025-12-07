@@ -87,4 +87,4 @@ $$
 | tanh    | $\tanh(x)$                     | GELU       | $\approx x\sigma(1.702x)$                                              |
 | ReLU    | $\max(0,x)$                    | ELU        | $f(x)=\begin{cases}x & x \geq 0 \\\alpha (e^x - 1) & x < 0\end{cases}$ |
 
-
+MLP的局限性：MLP的通用逼近 → 大量隐藏神经元（宽度） → 深度神经网络

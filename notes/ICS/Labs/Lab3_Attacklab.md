@@ -42,7 +42,6 @@ df 1e 40 00 00 00 00 00 // move指令
 
 ```asm6502
 pop %rax
-
 ```
 
 ## Phase5
@@ -55,7 +54,7 @@ pop %rax
 
 ![](C:\Users\20153\AppData\Roaming\marktext\images\2025-10-10-16-29-30-image.png)
 
-[修复 CS:APP 攻击实验室在新版 Ubuntu 22.04 上的段错误 | Rijuyuezhu 的博客 --- Fix CS:APP Attack Lab Segmentation Fault on Newest Ubuntu 22.04 | Rijuyuezhu's Blog](https://blog.rijuyuezhu.top/posts/db646f34/)
+[修复 CS:APP 攻击实验室在新版 Ubuntu 22.04 上的段错误：Rijuyuezhu 的博客 --- Fix CS:APP Attack Lab Segmentation Fault on Newest Ubuntu 22.04 Rijuyuezhu's Blog](https://blog.rijuyuezhu.top/posts/db646f34/)
 
 最终思路参考这篇：
 

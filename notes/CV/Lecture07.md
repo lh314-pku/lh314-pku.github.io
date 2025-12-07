@@ -130,7 +130,7 @@ x'^TEx&=0
 \end{align}
 $$
 
-我们令 $[t_{\times}]R=E_{3\times3}$，称 $E$ 为 **Essential Matrix本质矩阵**。
+我们令 $[t_{\times}]R=E_{3\times3}$，称 $E$ 为 **Essential Matrix本质矩阵**。它提供了极线的形式和对应点的映射关系。
 
 > 注：形如$ax+by+c=0$的直线可以由$l^Tx=0$给出，其中$l=(a,b,c)^T$，$x=(x,y,1)^T$
 

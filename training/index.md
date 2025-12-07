@@ -22,19 +22,17 @@ AI基础与工具概览。
 
 接口、API介绍以及调用
 
-## Chapter3
+## [Chapter3](https://lh314-pku.github.io/training/Chapter3)
 
-MCP Server 和 知识库搭建
-
-## Chapter4
+MCP Server
 
 Prompt 与 提示词工程
 
-## Chapter5
+## Chapter4
 
 Agent 简介与搭建
 
-## Chapter6
+## Chapter5
 
 多智能体协作
 

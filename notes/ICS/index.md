@@ -34,5 +34,17 @@ Lab相较于 CMU_CSAPP 没有不同（反而多了一个ArchLab），分别为�
 - [BombLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab2_Bomblab)
 - [AttackLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab3_Attacklab)
 - [ArchLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab4_Archlab)
+- [CacheLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab5_Cachelab)
+- [TshLab](https://lh314-pku.github.io/notes/ICS/Labs/Lab6_Tshlab)
 
 （注：这些笔记面向的是各位PKUer，可能与其他学校存在差异）
+
+以及补充课程（对应课本第 4 章）：
+
+[Processor Arch: ISA & Logic Design](https://lh314-pku.github.io/notes/ICS/Lecture01)
+
+[Processor Arch: Sequential](https://lh314-pku.github.io/notes/ICS/Lecture02)
+
+[Processor Arch: Pipelines](https://lh314-pku.github.io/notes/ICS/Lecture03)
+
+[Lecture AIOS](https://lh314-pku.github.io/notes/ICS/AIOS)
