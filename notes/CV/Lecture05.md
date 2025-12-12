@@ -107,7 +107,7 @@ f
 \end{bmatrix}
 $$
 
-即：$\mathbf{b}_{2n \times 1} = \mathbf{A}_{2n \times 6} \mathbf{t}_{6 \times 1}$。我们发现每一对对应点可以得到两个方程，那么只需要3个不共线的点就可以求解上述线性方程组。
+即： $\mathbf{b}_{2n \times 1} = \mathbf{A}_{2n \times 6} \mathbf{t}_{6 \times 1}$ 。我们发现每一对对应点可以得到两个方程，那么只需要3个不共线的点就可以求解上述线性方程组。
 
 但是在现实中，我们可以找到很多组点对，他们求解的结果可能会出现误差。于是我们考虑最小二乘法，通过最小化能量来求全局最优解：
 
@@ -213,8 +213,7 @@ $$
 显然$E$是一个二次型，我们对其求导并令其导数为 0，得到：
 
 $$
-\frac{\partial E}{\partial h}=2A^TAh+2\lambda h=0\\
-A^TAh=-\lambda h\\
+\frac{\partial E}{\partial h}=2A^TAh+2\lambda h=0,A^TAh=-\lambda h,
 E=-\lambda
 $$
 
@@ -231,7 +230,7 @@ $$
 首先考虑线性回归：
 
 $$
-y=ax+b\\E=\sum_i(ax_i+b-y_i)^2
+y=ax+b,E=\sum_i(ax_i+b-y_i)^2
 $$
 
 **离群值（Outlier）** 指的是在数据集中偏离其他数据点的极端数据点，由于误差函数是平方项，其平方会放大对总误差的贡献。离群值通常偏离真实线性趋势较远，因此会占用大量权重，从而显著影响最终回归结果。

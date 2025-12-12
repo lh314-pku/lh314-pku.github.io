@@ -95,14 +95,37 @@ MallocLab的目标是实现一个通用的动态内存分配器（Dynamic Storag
 
 （另外强烈建议阅读参考代码：`mm-naive.c`和`mm-textbook.c`）
 
-## 具体实现
+## 实验过程
 
-### `mm_init`
+先用现成的`mm-textbook.c`测试：
 
-`mm_init`函数执行一切必要的初始化操作，成功返回 0，失败返回 -1。
+```bash
+Using default tracefiles in ./traces/
+Measuring performance with a cycle counter.
+Processor clock rate ~= 2000.0 MHz
+...................
+Results for mm malloc:
+  valid  util   ops    secs     Kops  trace
+   yes    86%  100000  0.005094 19629 ./traces/alaska.rep
+ * yes    99%    4805  0.007150   672 ./traces/amptjp.rep
+ * yes    83%    4162  0.002547  1634 ./traces/bash.rep
+ * yes    56%   57716  1.286829    45 ./traces/boat.rep
+ u yes    73%      --        --    -- ./traces/binary2-bal.rep
+ * yes    99%    5032  0.006626   759 ./traces/cccp.rep
+ * yes    74%   11991  0.025020   479 ./traces/chrome.rep
+ * yes    99%   20000  0.001507 13272 ./traces/coalesce-big.rep
+   yes    66%   14400  0.000094152397 ./traces/coalescing-bal.rep
+   yes   100%      15  0.000006  2311 ./traces/corners.rep
+ * yes    99%    5683  0.010395   547 ./traces/cp-decl.rep
+ u yes    71%      --        --    -- ./traces/exhaust.rep
+ * yes   100%    5380  0.008263   651 ./traces/expr-bal.rep
+ * yes    91%   55092  0.363691   151 ./traces/freeciv.rep
+ * yes    88%     372  0.000079  4720 ./traces/ls.rep
+   yes    34%      10  0.000004  2674 ./traces/malloc.rep
+   yes    28%      17  0.000004  4441 ./traces/malloc-free.rep
+ p yes     --    1494  0.001146  1304 ./traces/perl.rep
+   yes    27%   14401  0.050526   285 ./traces/realloc.rep
+12 11     86%  171727  1.713254   100
 
-具体操作包括创建初始的空堆，设置序言块（用于简化管理）、尾序块（标志堆结束）、对齐填充块，调用 extend_heap() 扩展堆，创建一个大的空闲块，准备好分配内存。
-
-首先我们参考一下`mem_init`函数：
-
-> *mem_init* 是一个内存初始化函数，主要用于设置内存堆的起止地址，并初始化空闲列表。它采用最快合适（First Fit）方式进行内存分配。
+Perf index = 39 (util) & 0 (thru) = 39/80
+```

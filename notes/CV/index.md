@@ -4,7 +4,7 @@
 
 - 先修要求：高等数学
 
-- 编程语言：
+- 编程语言：Python
 
 - 授课教师：王鹏帅（助理教授）https://wang-ps.github.io
 
