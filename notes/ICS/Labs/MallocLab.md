@@ -1,5 +1,3 @@
 # Malloc Lab
 
 ## Writeup
-
-

@@ -129,3 +129,38 @@ Results for mm malloc:
 
 Perf index = 39 (util) & 0 (thru) = 39/80
 ```
+
+## 最终结果
+
+```bash
+Using default tracefiles in ./traces/
+Measuring performance with a cycle counter.
+Processor clock rate ~= 2000.0 MHz
+...................
+Results for mm malloc:
+  valid  util   ops    secs     Kops  trace
+   yes    86%  100000  0.003810 26248 ./traces/alaska.rep
+ * yes    99%    4805  0.002065  2327 ./traces/amptjp.rep
+ * yes    83%    4162  0.000084 49311 ./traces/bash.rep
+ * yes    77%   57716  0.001343 42971 ./traces/boat.rep
+ u yes    90%      --        --    -- ./traces/binary2-bal.rep
+ * yes    99%    5032  0.001590  3165 ./traces/cccp.rep
+ * yes    76%   11991  0.000348 34429 ./traces/chrome.rep
+ * yes    99%   20000  0.000505 39638 ./traces/coalesce-big.rep
+   yes    50%   14400  0.000114126605 ./traces/coalescing-bal.rep
+   yes   100%      15  0.000008  1951 ./traces/corners.rep
+ * yes    99%    5683  0.003003  1892 ./traces/cp-decl.rep
+ u yes    71%      --        --    -- ./traces/exhaust.rep
+ * yes   100%    5380  0.003187  1688 ./traces/expr-bal.rep
+ * yes    98%   55092  0.001526 36111 ./traces/freeciv.rep
+ * yes    88%     372  0.000012 30114 ./traces/ls.rep
+   yes     9%      10  0.000004  2464 ./traces/malloc.rep
+   yes     7%      17  0.000004  4121 ./traces/malloc-free.rep
+ p yes     --    1494  0.000077 19295 ./traces/perl.rep
+   yes    25%   14401  0.054798   263 ./traces/realloc.rep
+12 11     90%  171727  0.013741 12498
+
+Perf index = 48 (util) & 32 (thru) = 80/80
+```
+
+~~~~
