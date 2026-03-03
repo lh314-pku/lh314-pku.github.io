@@ -26,6 +26,14 @@
 
 [PKU：Data Structure and Algorithm](https://lh314-pku.github.io/notes/DSA/index)
 
+## 大二下_2026Spring
+
+[算法设计与分析](https://lh314-pku.github.io/notes/2026Spring/DAA/index)
+
+[电子游戏通论](https://lh314-pku.github.io/notes/2026Spring/Intro_EleGame/index)
+
+[大规模语言模型与自然语言生成](https://lh314-pku.github.io/notes/2026Spring/LLM&NLG/index)
+
 ---
 
 <script src="https://utteranc.es/client.js"
