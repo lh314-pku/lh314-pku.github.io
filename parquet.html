@@ -38,7 +38,6 @@
             margin: 0 auto;
         }
 
-        /* Header Area */
         header {
             text-align: center;
             margin-bottom: 2.5rem;
@@ -55,7 +54,6 @@
             color: var(--text-secondary);
         }
 
-        /* Upload Area */
         .upload-area {
             background: var(--surface-color);
             border: 2px dashed var(--border-color);
@@ -96,9 +94,8 @@
             display: none;
         }
 
-        /* Stats Bar */
         .stats-bar {
-            display: none; /* Hidden initially */
+            display: none;
             background: var(--surface-color);
             padding: 1rem 1.5rem;
             border-radius: 8px;
@@ -134,9 +131,8 @@
             gap: 10px;
         }
 
-        /* Table Area */
         .table-wrapper {
-            display: none; /* Hidden initially */
+            display: none;
             margin-top: 1.5rem;
             background: var(--surface-color);
             border-radius: 8px;
@@ -182,7 +178,6 @@
             background-color: var(--highlight-bg);
         }
 
-        /* Utility */
         .btn {
             background-color: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -199,17 +194,6 @@
             border-color: #cbd5e1;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* Loading State */
         .loading-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -247,20 +231,19 @@
             transform: translateY(100px);
             transition: transform 0.3s ease;
             z-index: 2000;
+            max-width: 400px;
         }
         
         .toast.show {
             transform: translateY(0);
         }
 
-        .badge-limit {
-            background-color: #fff7ed;
-            color: #c2410c;
-            border: 1px solid #ffedd5;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-left: 10px;
+        .pagination-hint {
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            display: none;
+            text-align: right;
         }
     </style>
 </head>
@@ -315,24 +298,25 @@
             </table>
         </div>
         
-        <div style="margin-top: 10px; color: var(--text-secondary); font-size: 0.85rem; display: none;" id="paginationHint">
-            * 为保证浏览器流畅，仅展示前 <span id="limitCount">1000</span> 行数据。
+        <div class="pagination-hint" id="paginationHint">
+            * 为保证浏览器流畅，仅展示前 500 行数据。
         </div>
     </div>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p style="margin-top: 1rem; color: var(--text-secondary);">正在解析 Parquet 文件...</p>
+        <p style="margin-top: 1rem; color: var(--text-secondary);">正在解析 Parquet 文件，请稍候...</p>
     </div>
 
     <!-- Error Toast -->
-    <div class="toast" id="errorToast">无法读取文件，请确保是有效的 Parquet 格式。</div>
+    <div class="toast" id="errorToast">发生错误</div>
 
     <!-- ES Module Script -->
     <script type="module">
-        // 使用 hyparquet 库，这是一个轻量级的纯 JS Parquet 解析器
-        import { parquetRead } from 'https://cdn.jsdelivr.net/npm/hyparquet@1.0.0/+esm';
+        // 修正1: 使用 esm.sh CDN，它对浏览器模块依赖处理更好
+        // 修正2: 引入 hyparquet
+        import { parquetRead } from 'https://esm.sh/hyparquet@1.0.12';
 
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -344,10 +328,9 @@
         const tableBody = document.getElementById('tableBody');
         const paginationHint = document.getElementById('paginationHint');
         
-        // 配置：最大显示行数，防止大文件卡死浏览器
-        const MAX_PREVIEW_ROWS = 500; 
+        const MAX_PREVIEW_ROWS = 500;
 
-        // Event Listeners for Drag & Drop
+        // Event Listeners
         dropZone.addEventListener('click', () => fileInput.click());
         
         dropZone.addEventListener('dragover', (e) => {
@@ -378,12 +361,9 @@
             location.reload();
         });
 
-        // Main File Handling Logic
         async function handleFile(file) {
-            // UI Reset
             resetUI();
             
-            // Validate extension
             if (!file.name.endsWith('.parquet')) {
                 showError("请上传 .parquet 格式的文件");
                 return;
@@ -392,49 +372,54 @@
             showLoading(true);
             
             try {
-                // 1. Read file as ArrayBuffer
+                // 修正3: 必须将 ArrayBuffer 转换为 Uint8Array，否则 hyparquet 可能无法解析
                 const arrayBuffer = await file.arrayBuffer();
+                const uint8Array = new Uint8Array(arrayBuffer);
 
-                // 2. Parse Parquet using hyparquet
-                // hyparquet 返回的是对象数组，非常便于处理
-                const { data, rowCount } = await parquetRead({
-                    file: arrayBuffer,
-                    // 为了性能，我们可以只读取部分数据，但 hyparquet 默认是全读。
-                    // 我们在渲染层进行截断。
+                // 修正4: parquetRead 返回的是一个对象数组，而不是 {data, rowCount} 对象
+                // 我们需要直接接收这个数组
+                console.log("开始解析...");
+                const data = await parquetRead({ 
+                    file: uint8Array 
                 });
 
-                // 3. Update Stats
+                if (!data || !Array.isArray(data)) {
+                    throw new Error("解析器返回了无效数据，请检查文件是否损坏或格式是否正确。");
+                }
+
+                console.log("解析完成，行数:", data.length);
+
+                // 更新统计数据
                 document.getElementById('fileName').textContent = file.name;
                 document.getElementById('fileName').title = file.name;
-                document.getElementById('totalRows').textContent = rowCount.toLocaleString();
+                document.getElementById('totalRows').textContent = data.length.toLocaleString();
                 
-                // 4. Render Table
                 renderTable(data);
 
-                // Show UI elements
                 statsBar.style.display = 'flex';
                 tableWrapper.style.display = 'block';
-                dropZone.style.display = 'none'; // Hide upload box to focus on data
+                dropZone.style.display = 'none';
 
             } catch (err) {
-                console.error(err);
-                showError("解析文件失败: " + err.message);
+                console.error("详细错误:", err);
+                let msg = "解析失败: " + err.message;
+                if (msg.includes("Gzip") || msg.includes("Snappy")) {
+                    msg = "该文件使用了特定的压缩算法，当前浏览器端解析器可能不支持。";
+                }
+                showError(msg);
             } finally {
                 showLoading(false);
             }
         }
 
         function renderTable(data) {
-            if (!data || data.length === 0) {
+            if (data.length === 0) {
                 showError("文件中没有数据");
                 return;
             }
 
-            // Limit rows for preview
             const previewData = data.slice(0, MAX_PREVIEW_ROWS);
             const isLimited = data.length > MAX_PREVIEW_ROWS;
-
-            // Get columns from the first row keys
             const columns = Object.keys(previewData[0]);
             document.getElementById('totalCols').textContent = columns.length;
 
@@ -448,7 +433,6 @@
 
             // Render Body
             tableBody.innerHTML = '';
-            // 使用 DocumentFragment 优化渲染性能
             const fragment = document.createDocumentFragment();
 
             previewData.forEach(row => {
@@ -457,13 +441,11 @@
                     const td = document.createElement('td');
                     const val = row[col];
                     
-                    // Handle null/undefined
                     if (val === null || val === undefined) {
                         td.textContent = 'NULL';
                         td.style.color = '#cbd5e1';
                         td.style.fontStyle = 'italic';
                     } else if (typeof val === 'object') {
-                        // Handle nested objects/arrays in Parquet
                         td.textContent = JSON.stringify(val);
                         td.style.fontFamily = 'monospace';
                     } else {
@@ -476,14 +458,11 @@
 
             tableBody.appendChild(fragment);
 
-            // Show pagination limit hint if needed
             if (isLimited) {
                 paginationHint.style.display = 'block';
-                document.getElementById('limitCount').textContent = MAX_PREVIEW_ROWS;
             }
         }
 
-        // Utility Functions
         function showLoading(show) {
             loadingOverlay.style.display = show ? 'flex' : 'none';
         }
@@ -493,7 +472,7 @@
             errorToast.classList.add('show');
             setTimeout(() => {
                 errorToast.classList.remove('show');
-            }, 5000);
+            }, 6000);
         }
 
         function resetUI() {
