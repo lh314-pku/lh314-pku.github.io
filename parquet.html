@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Parquet 可视化工坊 | 优雅表格展示</title>
+    <!-- 使用 Inter 字体，简洁现代 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (免费图标库，提升视觉) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #f6f8fc;
+            color: #1e293b;
+            line-height: 1.4;
+            padding: 2rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 头部卡片 */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 i {
+            background: none;
+            color: #2a5298;
+            font-size: 2rem;
+        }
+
+        .sub {
+            color: #5b6e8c;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        /* 上传区域 + 控制栏 */
+        .upload-card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+            padding: 1.6rem 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.2s ease;
+            border: 1px solid #eef2f8;
+        }
+
+        .dropzone {
+            background: #fafcff;
+            border: 2px dashed #cbdde9;
+            border-radius: 24px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1.2rem;
+        }
+
+        .dropzone:hover {
+            border-color: #3b82f6;
+            background: #f0f6ff;
+        }
+
+        .dropzone i {
+            font-size: 2.5rem;
+            color: #5f8bb3;
+            margin-bottom: 0.5rem;
+        }
+
+        .dropzone p {
+            color: #334155;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .dropzone small {
+            color: #7c8ba0;
+            font-size: 0.8rem;
+        }
+
+        .file-input-hidden {
+            display: none;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .limit-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 0.3rem 1rem 0.3rem 1.2rem;
+            border-radius: 60px;
+        }
+
+        .limit-group label {
+            font-weight: 500;
+            color: #1e2f44;
+            font-size: 0.85rem;
+        }
+
+        .limit-input {
+            width: 90px;
+            padding: 8px 12px;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .limit-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+
+        .btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #1f3a6b;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #1e3c72;
+            border-color: #1e3c72;
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary:hover {
+            background: #0f2a4f;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .info-badge {
+            font-size: 0.8rem;
+            background: #eef2ff;
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            color: #1e3c72;
+        }
+
+        /* 表格区域 */
+        .table-wrapper {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f8;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: #ffffff;
+            border-bottom: 1px solid #edf2f7;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stats {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #3b5e7e;
+            background: #f1f5f9;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 65vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 600px;
+        }
+
+        .data-table th {
+            background: #f8fafd;
+            color: #1e2a3e;
+            font-weight: 600;
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            text-align: left;
+            font-size: 0.85rem;
+            letter-spacing: -0.2px;
+        }
+
+        .data-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f0f2f5;
+            color: #1f2f44;
+            word-break: break-word;
+            max-width: 280px;
+            white-space: normal;
+        }
+
+        .data-table tr:hover td {
+            background-color: #fafcff;
+        }
+
+        /* 空状态 & 错误 */
+        .empty-state, .loading-state, .error-state {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            color: #5c6f87;
+        }
+
+        .error-state {
+            color: #c2412c;
+            background: #fff5f5;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(59,130,246,0.2);
+            border-radius: 50%;
+            border-top-color: #1e3c72;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #7c8ba0;
+        }
+
+        @media (max-width: 680px) {
+            body { padding: 1rem; }
+            .upload-card { padding: 1rem; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .limit-group { justify-content: space-between; }
+            .btn { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>
+            <i class="fas fa-table-list"></i> 
+            Parquet 视界
+        </h1>
+        <div class="sub">简洁 · 优雅 · 即时解析 · 以表格形式呈现列式数据</div>
+    </div>
+
+    <div class="upload-card">
+        <div class="dropzone" id="dropzone">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>拖拽或点击上传 .parquet 文件</p>
+            <small>支持 Parquet 格式，即时渲染为表格</small>
+        </div>
+        <input type="file" id="fileInput" accept=".parquet" class="file-input-hidden" />
+        
+        <div class="controls">
+            <div class="limit-group">
+                <i class="fas fa-eye"></i>
+                <label>显示行数上限</label>
+                <input type="number" id="rowLimit" class="limit-input" value="1000" step="100" min="1" max="50000">
+                <button id="applyLimitBtn" class="btn btn-outline" style="border-radius:40px;"><i class="fas fa-rotate-right"></i> 应用</button>
+            </div>
+            <div class="info-badge" id="engineStatus">
+                <i class="fas fa-cog fa-spin"></i> 初始化引擎中...
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <div class="table-header">
+            <span><i class="fas fa-chart-simple"></i> 数据预览</span>
+            <span class="stats" id="tableStats">—</span>
+        </div>
+        <div id="tableContainer" class="table-container">
+            <div class="empty-state">
+                <i class="fas fa-database" style="font-size: 2rem; opacity: 0.5; margin-bottom: 10px; display: inline-block;"></i>
+                <p>等待上传 Parquet 文件</p>
+                <small>支持列式存储，自动解析为整洁表格</small>
+            </div>
+        </div>
+    </div>
+    <footer>
+        ⚡ 基于 DuckDB-Wasm 引擎 | 本地解析，数据绝不上传 | 简洁表格视图
+    </footer>
+</div>
+
+<script type="module">
+    // ---------- DuckDB-Wasm 动态导入和初始化 ----------
+    import * as duckdb from 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/dist/duckdb-browser-esm.js';
+
+    // DOM 元素
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const rowLimitInput = document.getElementById('rowLimit');
+    const applyLimitBtn = document.getElementById('applyLimitBtn');
+    const engineStatusSpan = document.getElementById('engineStatus');
+    const tableContainer = document.getElementById('tableContainer');
+    const tableStatsSpan = document.getElementById('tableStats');
+
+    // 全局状态
+    let db = null;           // AsyncDuckDB 实例
+    let conn = null;        // 数据库连接
+    let isEngineReady = false;
+    let currentParquetBuffer = null;    // 最近上传的文件的 ArrayBuffer
+    let currentFileName = null;
+
+    // 辅助函数: 展示加载中表格
+    function showLoadingTable() {
+        tableContainer.innerHTML = `
+            <div class="loading-state">
+                <div class="spinner" style="margin:0 auto 12px;"></div>
+                <p>正在解析 Parquet 文件...</p>
+                <small>利用高性能列式引擎，请稍候</small>
+            </div>
+        `;
+        tableStatsSpan.innerText = '加载中...';
+    }
+
+    function showEmptyMessage(msg = '暂无数据，请上传 Parquet 文件') {
+        tableContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-table" style="font-size: 2rem; opacity: 0.4;"></i>
+                <p>${msg}</p>
+            </div>
+        `;
+        tableStatsSpan.innerText = '—';
+    }
+
+    function showErrorMsg(errorText) {
+        tableContainer.innerHTML = `
+            <div class="error-state">
+                <i class="fas fa-circle-exclamation" style="font-size: 1.8rem; margin-bottom: 8px;"></i>
+                <p><strong>解析失败</strong><br>${escapeHtml(errorText)}</p>
+                <small>请检查文件是否为有效的 Parquet 格式</small>
+            </div>
+        `;
+        tableStatsSpan.innerText = '错误';
+    }
+
+    // 简单的防XSS转义 (用于显示错误或动态文本)
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // 核心: 将 Arrow 表渲染为 HTML 表格 (优雅，整洁)
+    function renderTableFromArrow(arrowTable, limitUsed, totalCountHint = null) {
+        if (!arrowTable || arrowTable.numRows === 0) {
+            showEmptyMessage('该 Parquet 文件无数据行');
+            return;
+        }
+
+        const schema = arrowTable.schema;
+        const fields = schema.fields;   // 列元数据
+        const columnNames = fields.map(f => f.name);
+        const numCols = columnNames.length;
+        const numRows = arrowTable.numRows;
+        
+        // 获取行数据: 将 Arrow 表转换为 JavaScript 对象数组 (高效遍历)
+        // 使用 toArray() 方式，或者手动构建行
+        // 兼容性好: 使用 arrow-table 的 get 方法
+        const rowsData = [];
+        for (let i = 0; i < numRows; i++) {
+            const row = {};
+            for (let j = 0; j < numCols; j++) {
+                const colName = columnNames[j];
+                let val = arrowTable.getChild(j)?.get(i);
+                // 处理特殊类型: BigInt, Date, 等等，转为友好字符串
+                if (typeof val === 'bigint') {
+                    val = val.toString();
+                } else if (val instanceof Date) {
+                    val = val.toLocaleString();
+                } else if (val === null || val === undefined) {
+                    val = '∅';
+                } else if (typeof val === 'object') {
+                    // 处理嵌套结构/列表等，转为 JSON 字符串简写
+                    try {
+                        val = JSON.stringify(val);
+                        if (val.length > 80) val = val.substring(0, 77) + '...';
+                    } catch {
+                        val = '[复杂数据]';
+                    }
+                } else {
+                    val = String(val);
+                    // 过长的文本截断，保持表格美观
+                    if (val.length > 120) val = val.substring(0, 117) + '...';
+                }
+                row[colName] = val;
+            }
+            rowsData.push(row);
+        }
+
+        // 构建表格 HTML
+        let html = '<table class="data-table"><thead><tr>';
+        for (let col of columnNames) {
+            html += `<th>${escapeHtml(col)}</th>`;
+        }
+        html += '</tr></thead><tbody>';
+        
+        for (let row of rowsData) {
+            html += '<tr>';
+            for (let col of columnNames) {
+                let cellValue = row[col] !== undefined ? row[col] : '∅';
+                html += `<td title="${escapeHtml(String(cellValue).substring(0, 200))}">${escapeHtml(String(cellValue))}</td>`;
+            }
+            html += '</tr>';
+        }
+        html += '</tbody></table>';
+        
+        tableContainer.innerHTML = html;
+        
+        // 更新统计信息
+        let totalInfo = `共 ${numRows.toLocaleString()} 行  ·  ${numCols} 列`;
+        if (totalCountHint !== null && totalCountHint > numRows) {
+            totalInfo += ` (当前限制显示前 ${numRows.toLocaleString()}/${totalCountHint.toLocaleString()} 行)`;
+        } else if (totalCountHint !== null && totalCountHint === numRows) {
+            totalInfo = `共 ${numRows.toLocaleString()} 行  ·  ${numCols} 列 (全量)`;
+        } else {
+            totalInfo = `显示 ${numRows.toLocaleString()} 行  ·  ${numCols} 列`;
+        }
+        tableStatsSpan.innerText = totalInfo;
+    }
+
+    // 核心: 使用 duckdb 查询并渲染 (给定 limit 值)
+    async function loadAndRenderParquet(parquetArrayBuffer, limitVal, fileNameHint = 'upload.parquet') {
+        if (!isEngineReady || !db || !conn) {
+            throw new Error('数据引擎未就绪，请稍后重试');
+        }
+        if (!parquetArrayBuffer || parquetArrayBuffer.byteLength === 0) {
+            throw new Error('文件内容为空');
+        }
+
+        // 注册文件 (覆盖旧的)
+        const fileRegName = 'current_data.parquet';
+        try {
+            await db.dropFile(fileRegName).catch(() => {}); // 忽略不存在错误
+        } catch(e) { /* 静默 */ }
+        await db.registerFileBuffer(fileRegName, new Uint8Array(parquetArrayBuffer));
+        
+        // 先获取总行数 (用于展示友好提示)
+        let totalRows = null;
+        try {
+            const countResult = await conn.query(`SELECT COUNT(*) as cnt FROM '${fileRegName}'`);
+            if (countResult && countResult.numRows > 0) {
+                const cntVal = countResult.getChild('cnt')?.get(0);
+                if (typeof cntVal === 'bigint') totalRows = Number(cntVal);
+                else if (typeof cntVal === 'number') totalRows = cntVal;
+                else totalRows = parseInt(cntVal);
+            }
+        } catch (e) {
+            console.warn("无法获取精确总行数", e);
+        }
+        
+        // 执行带 limit 的查询
+        const sql = `SELECT * FROM '${fileRegName}' LIMIT ${Math.min(limitVal, 50000)}`; // 前端保护最大5w
+        const arrowResult = await conn.query(sql);
+        
+        // 渲染表格
+        renderTableFromArrow(arrowResult, limitVal, totalRows);
+        return true;
+    }
+
+    // 处理上传的 File 对象
+    async function handleParquetFile(file) {
+        if (!file) return;
+        if (!file.name.toLowerCase().endsWith('.parquet')) {
+            showErrorMsg('请上传扩展名为 .parquet 的文件');
+            return;
+        }
+        
+        // 显示加载
+        showLoadingTable();
+        
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            if (!arrayBuffer || arrayBuffer.byteLength === 0) throw new Error('文件为空');
+            currentParquetBuffer = arrayBuffer;
+            currentFileName = file.name;
+            
+            const limitVal = parseInt(rowLimitInput.value, 10);
+            if (isNaN(limitVal) || limitVal < 1) {
+                rowLimitInput.value = '1000';
+                await loadAndRenderParquet(currentParquetBuffer, 1000, currentFileName);
+            } else {
+                await loadAndRenderParquet(currentParquetBuffer, Math.min(limitVal, 50000), currentFileName);
+            }
+        } catch (err) {
+            console.error(err);
+            let errMsg = err.message || '解析异常，可能文件损坏或格式不支持';
+            if (errMsg.includes('Invalid parquet')) errMsg = '无效的 Parquet 文件格式';
+            showErrorMsg(errMsg);
+        }
+    }
+
+    // 手动刷新 (使用当前 buffer 和新 limit)
+    async function refreshWithCurrentLimit() {
+        if (!currentParquetBuffer) {
+            showEmptyMessage('尚未选择任何 Parquet 文件');
+            return;
+        }
+        if (!isEngineReady) {
+            showErrorMsg('引擎未完成初始化，请稍后再试');
+            return;
+        }
+        showLoadingTable();
+        try {
+            let limitVal = parseInt(rowLimitInput.value, 10);
+            if (isNaN(limitVal) || limitVal < 1) limitVal = 1000;
+            limitVal = Math.min(limitVal, 50000);
+            await loadAndRenderParquet(currentParquetBuffer, limitVal, currentFileName);
+        } catch (err) {
+            showErrorMsg(err.message || '刷新失败');
+        }
+    }
+
+    // ---------- DuckDB 引擎初始化 ----------
+    async function initDuckDBEngine() {
+        try {
+            engineStatusSpan.innerHTML = '<i class="fas fa-cog fa-spin"></i> 加载 WASM 组件...';
+            // 获取预置 bundles (jsdelivr)
+            const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
+            const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+            
+            // 创建 worker
+            const workerBlob = new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' });
+            const workerUrl = URL.createObjectURL(workerBlob);
+            const worker = new Worker(workerUrl);
+            
+            const logger = new duckdb.ConsoleLogger();
+            const asyncDuckDB = new duckdb.AsyncDuckDB(logger, worker);
+            
+            // 初始化配置 (cast bigint 为 double 防止前端精度问题，但展示转为字符串)
+            await asyncDuckDB.initialize({
+                ...bundle,
+                query: {
+                    castBigIntToDouble: false,  // 保留 bigint 原样我们手动处理
+                }
+            });
+            
+            db = asyncDuckDB;
+            conn = await db.connect();
+            isEngineReady = true;
+            engineStatusSpan.innerHTML = '<i class="fas fa-check-circle"></i> 引擎就绪 · 支持 Parquet';
+            engineStatusSpan.style.background = '#e6f7ec';
+            engineStatusSpan.style.color = '#2b6e3b';
+            
+            // 如果有等待的文件buffer，自动渲染
+            if (currentParquetBuffer) {
+                await refreshWithCurrentLimit();
+            } else {
+                showEmptyMessage('就绪 ✓ 请上传 .parquet 文件');
+            }
+        } catch (error) {
+            console.error('引擎初始化失败', error);
+            engineStatusSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 引擎加载失败';
+            engineStatusSpan.style.background = '#ffe8e6';
+            engineStatusSpan.style.color = '#b91c1c';
+            showErrorMsg('DuckDB 引擎初始化失败，请检查网络或刷新页面重试');
+            isEngineReady = false;
+        }
+    }
+
+    // 事件绑定
+    function bindEvents() {
+        // 点击 dropzone 触发文件选择
+        dropzone.addEventListener('click', () => fileInput.click());
+        // 拖拽上传
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.style.borderColor = '#3b82f6';
+            dropzone.style.background = '#f0f9ff';
+        });
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.style.borderColor = '#cbdde9';
+            dropzone.style.background = '#fafcff';
+        });
+        dropzone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            dropzone.style.borderColor = '#cbdde9';
+            dropzone.style.background = '#fafcff';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.name.toLowerCase().endsWith('.parquet')) {
+                    await handleParquetFile(file);
+                } else {
+                    showErrorMsg('请拖拽 .parquet 格式文件');
+                }
+            }
+        });
+        
+        fileInput.addEventListener('change', async (e) => {
+            if (fileInput.files.length > 0) {
+                await handleParquetFile(fileInput.files[0]);
+                fileInput.value = ''; // 允许重复上传同一个文件
+            }
+        });
+        
+        applyLimitBtn.addEventListener('click', async () => {
+            if (!currentParquetBuffer) {
+                showEmptyMessage('无文件，请先上传 Parquet');
+                return;
+            }
+            if (!isEngineReady) {
+                showErrorMsg('引擎未就绪，请稍后');
+                return;
+            }
+            await refreshWithCurrentLimit();
+        });
+    }
+
+    // 启动引擎 + 绑定UI
+    (async function startup() {
+        bindEvents();
+        await initDuckDBEngine();
+        // 如果引擎初始化失败，仍然允许尝试文件，但会有错误提示
+    })();
+</script>
+</body>
+</html>
