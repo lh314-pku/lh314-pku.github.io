@@ -21,5 +21,3 @@
 ---
 
 [Lecture01](https://lh314-pku.github.io/notes/2026Spring/LLM&NLG/Lec01)
-
-

@@ -1,3 +1,14 @@
+<head>
+   <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+
 # Lecture01
 
 好的算法：效率高+节省空间
@@ -57,7 +68,3 @@
 最坏情况：W(n)，解决问题所需的最长时间
 
 平均情况：A(n)，$A(n)=\sum_{I\in S}t_Ip_I$，S：实例集，次数*概率加权，即期望
-
-
-
-
