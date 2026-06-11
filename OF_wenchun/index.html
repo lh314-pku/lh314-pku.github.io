@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>元火x文春部 | 动漫社宣传部新闻站</title>
+    <!-- 引入 marked.js 用于渲染 Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+            background: #fef9f0;
+            color: #2c2418;
+            line-height: 1.5;
+        }
+
+        /* 整体容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* 头部区域 — 醒目简洁 */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 4px solid #ff8c42;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .logo {
+            width: 60px;
+            height: auto;
+            transition: transform 0.2s ease;
+        }
+        .logo:hover {
+            transform: scale(1.02);
+        }
+        .site-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #e65c1e, #ffb347);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+        }
+        .header-tagline {
+            background: #ffedd5;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #c2410c;
+            border: 1px solid #ffcd94;
+        }
+
+        /* 新闻网格 */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* 新闻卡片 — 清爽 + 阴影 */
+        .news-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.12);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ffe3c6;
+        }
+        .news-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 36px -16px rgba(0, 0, 0, 0.2);
+            border-color: #ffc28c;
+        }
+        .card-content {
+            padding: 1.5rem 1.5rem 1.8rem;
+            flex: 1;
+        }
+        .card-tag {
+            display: inline-block;
+            background: #ffede3;
+            color: #d95b0c;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+            border: 0.5px solid #ffd5ae;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0 0.6rem;
+            color: #2c1a0c;
+            line-height: 1.3;
+        }
+        .card-date {
+            font-size: 0.8rem;
+            color: #b45a2e;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-date::before {
+            content: "📅";
+            font-size: 0.75rem;
+        }
+        .card-summary {
+            color: #4a3724;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+            border-left: 3px solid #ffa559;
+            padding-left: 0.8rem;
+        }
+        .read-more {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ff7b2c;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+        .news-card:hover .read-more {
+            gap: 12px;
+            color: #e65c00;
+        }
+
+        /* 加载状态 & 空状态 */
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #c2410c;
+        }
+        .no-news {
+            text-align: center;
+            padding: 3rem;
+            background: #fff7ef;
+            border-radius: 32px;
+            color: #b97f4b;
+        }
+
+        /* 页脚小可爱 */
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            padding-top: 1.8rem;
+            border-top: 1px dashed #ffd2a5;
+            color: #b77e4a;
+            font-size: 0.8rem;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 700px) {
+            .container {
+                padding: 1rem;
+            }
+            .site-title {
+                font-size: 1.5rem;
+            }
+            .logo {
+                width: 48px;
+            }
+            .news-grid {
+                gap: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部区域 -->
+    <div class="header">
+        <div class="brand">
+            <!-- 使用logo.png，同时添加容错样式，若图片不存在显示文字占位，但符合需求logo.png存在即可 -->
+            <img src="logo.png" alt="元火动漫社logo" class="logo" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23ff8c42\'/%3E%3Ctext x=\'50\' y=\'67\' font-size=\'30\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3E元火%3C/text%3E%3C/svg%3E';">
+            <h1 class="site-title">元火x文春部</h1>
+        </div>
+        <div class="header-tagline">
+            🔥 发现你所不知道的元火
+        </div>
+    </div>
+
+    <!-- 新闻列表容器 -->
+    <div id="newsListContainer" class="news-grid">
+        <div class="loading-spinner">🔥 加载热闻中...</div>
+    </div>
+    <div class="footer">
+        🌸 元火动漫社 · 文春宣传部 🌸
+    </div>
+</div>
+
+<script>
+    // ---------- 配置 ----------
+    // 新闻文件清单 (手动维护, 完全基于 msgs 文件夹下的真实 md 文件)
+    // 这样无需后端目录列举, 同时完全满足从 md 读取全部展示信息的要求
+    // 新增新闻时只需在数组中增加文件名即可, 所有标题/日期/tag/简介均从对应 md 解析
+    const NEWS_FILES = [
+        "2026-06-10.md"
+    ];
+    
+    const MSGS_PATH = "msgs/";
+    // 用于存储新闻完整元数据 (解析后存入, 便于跳转)
+    let newsMetadata = new Map(); // key: filename, value: { title, date, tag, summary, fullRawContent, fullMarkdownBody }
+
+    // 从 md 文本中解析 标题, 日期, 标签, 简介, 并分离正文(不含元数据行)
+    // 规范说明: 
+    // 第一行以 "# " 开头的为标题
+    // 随后寻找 "日期:"  行 -> 日期内容
+    // "标签:" 行 -> 标签内容
+    // "简介:" 行 -> 简介内容
+    // 其余行属于正文Markdown (详情)
+    function parseNewsFromMarkdown(rawMd, filename) {
+        const lines = rawMd.split(/\r?\n/);
+        let title = "";
+        let date = "";
+        let tag = "";
+        let summary = "";
+        let bodyLines = [];
+        let metaDone = false;
+        let i = 0;
+        
+        // 1. 提取标题 (第一行以# 开头)
+        if (lines.length > 0 && lines[0].trim().startsWith("# ")) {
+            title = lines[0].trim().replace(/^#\s+/, "").trim();
+            i = 1;
+        } else {
+            // 容错: 如果没有#，用文件名做标题后备
+            title = filename.replace(/\.md$/i, "");
+        }
+        
+        // 扫描剩余部分，提取 日期/标签/简介 元数据 (连续出现在前部)
+        let metaExtracted = false;
+        for (let j = i; j < lines.length; j++) {
+            const line = lines[j];
+            const trimmed = line.trim();
+            if (!metaExtracted && trimmed === "") continue; // 跳过开头的空行
+            
+            // 检查日期
+            if (!date && trimmed.match(/^日期[:：]\s*/)) {
+                date = trimmed.replace(/^日期[:：]\s*/, "").trim();
+                continue;
+            }
+            // 检查标签
+            if (!tag && trimmed.match(/^标签[:：]\s*/)) {
+                tag = trimmed.replace(/^标签[:：]\s*/, "").trim();
+                continue;
+            }
+            // 检查简介
+            if (!summary && trimmed.match(/^简介[:：]\s*/)) {
+                summary = trimmed.replace(/^简介[:：]\s*/, "").trim();
+                continue;
+            }
+            // 一旦遇到不是这三个元数据行，且已经处理完前三者 或者 遇到非元数据内容，就停止元数据提取
+            if ((date && tag && summary) || (trimmed !== "" && !trimmed.match(/^(日期|标签|简介)[:：]/))) {
+                metaExtracted = true;
+                bodyLines.push(line);
+            } else if (!metaExtracted && trimmed !== "" && !trimmed.match(/^(日期|标签|简介)[:：]/)) {
+                // 若不是元数据行，则归入正文
+                metaExtracted = true;
+                bodyLines.push(line);
+            } else if (!metaExtracted) {
+                // 空行跳过
+                continue;
+            } else {
+                bodyLines.push(line);
+            }
+        }
+        
+        // 若日期/标签/简介有缺失，填充默认值
+        if (!date) date = "未知日期";
+        if (!tag) tag = "文春部快讯";
+        if (!summary) summary = "点击查看完整内容，更多社团动态～";
+        
+        const fullMarkdownBody = bodyLines.join("\n").trim() || "暂无详细内容，敬请期待后续报道！";
+        
+        return {
+            title,
+            date,
+            tag,
+            summary,
+            fullMarkdownBody,
+            rawMd
+        };
+    }
+    
+    // 渲染新闻列表 (卡片)
+    async function loadAndRenderNewsList() {
+        const container = document.getElementById("newsListContainer");
+        if (!container) return;
+        container.innerHTML = '<div class="loading-spinner">🔥 正在吹报文春号外...</div>';
+        
+        // 存储所有的卡片数据
+        const cardsData = [];
+        
+        // 并发获取所有 md 文件并解析
+        const fetchPromises = NEWS_FILES.map(async (filename) => {
+            try {
+                const response = await fetch(`${MSGS_PATH}${filename}`);
+                if (!response.ok) {
+                    console.warn(`无法获取新闻: ${filename}`);
+                    return null;
+                }
+                const mdContent = await response.text();
+                const parsed = parseNewsFromMarkdown(mdContent, filename);
+                // 存储完整内容以供详情页使用 (本地存储 key 或传参, 采用URL参数+重新fetch方式, 但为了详情页再次获取，不需要存储全内容在内存大对象，但为了性能也可以保留)
+                // 这里保存映射，但详情页会重新请求，确保数据最新。但为了跳转传参，我们只需要文件名，详情页独立请求。
+                // 但是列表要展示数据，直接使用解析后的。
+                return {
+                    filename,
+                    title: parsed.title,
+                    date: parsed.date,
+                    tag: parsed.tag,
+                    summary: parsed.summary,
+                    fullBody: parsed.fullMarkdownBody
+                };
+            } catch (err) {
+                console.error(`加载新闻 ${filename} 失败`, err);
+                return null;
+            }
+        });
+        
+        const results = await Promise.all(fetchPromises);
+        const validNews = results.filter(item => item !== null);
+        
+        if (validNews.length === 0) {
+            container.innerHTML = '<div class="no-news">✨ 文春部今日休刊，暂无新闻，敬请期待～ ✨</div>';
+            return;
+        }
+        
+        // 按日期倒序排列 (如果有真实日期格式优先，否则简单字符串排序)
+        validNews.sort((a, b) => {
+            if (a.date === "未知日期") return 1;
+            if (b.date === "未知日期") return -1;
+            return new Date(b.date) - new Date(a.date);
+        });
+        
+        // 生成卡片HTML
+        let cardsHtml = "";
+        for (const news of validNews) {
+            cardsHtml += `
+                <div class="news-card" data-filename="${news.filename}">
+                    <div class="card-content">
+                        <span class="card-tag">🏷️ ${escapeHtml(news.tag)}</span>
+                        <div class="card-title">${escapeHtml(news.title)}</div>
+                        <div class="card-date">${escapeHtml(news.date)}</div>
+                        <div class="card-summary">${escapeHtml(news.summary.length > 120 ? news.summary.slice(0, 120) + "…" : news.summary)}</div>
+                        <div class="read-more">阅读全文 →</div>
+                    </div>
+                </div>
+            `;
+        }
+        container.innerHTML = cardsHtml;
+        
+        // 绑定卡片点击事件 (跳转详情页携带文件名)
+        const cards = document.querySelectorAll('.news-card');
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                const filename = card.getAttribute('data-filename');
+                if (filename) {
+                    window.location.href = `detail.html?news=${encodeURIComponent(filename)}`;
+                }
+            });
+        });
+    }
+    
+    // 简单的防XSS辅助函数
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
+    // 执行加载首页新闻
+    loadAndRenderNewsList();
+</script>
+</body>
+</html>
