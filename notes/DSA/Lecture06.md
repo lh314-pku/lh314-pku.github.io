@@ -78,7 +78,7 @@
 
 ### 5.并查集 & 路径压缩算法WQUPC
 
-指路：[Lecture01](https://lh314-pku.github.io/notes/Algorithm_I&II/Lecture1.01)
+指路：[Lecture01](https://lh314-pku.github.io/notes/Others/Algorithm_I&II/Lecture1.01)
 
 并查集本质上是一种等价类的处理，是由一组不相交的子集组成的集合
 

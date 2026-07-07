@@ -36,4 +36,4 @@ Lecture06：[树](https://lh314-pku.github.io/notes/DSA/Lecture06)
 
 ---
 
-广告：[Coursera:Algorithm I&II](https://lh314-pku.github.io/notes/Algorithm_I&II)
+广告：[Coursera:Algorithm I&II](https://lh314-pku.github.io/notes/Others/Algorithm_I&II)
