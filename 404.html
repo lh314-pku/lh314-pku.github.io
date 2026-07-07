@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - 页面不见了喵~</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            color: #333;
-        }
-        a {
-            color: #3498db;
-            text-decoration: none;
-            font-size: 18px;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 · 页面不存在</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>404 error!</h1>
-    <p>您要找的页面不存在，正在努力修复喵~</p>
-    <p><a href="/">回到主页</a></p>
+  <header class="site-header">
+    <nav class="site-shell nav" aria-label="主导航">
+      <a class="brand" href="/">
+        <span class="brand-title">LH314</span>
+        <span class="brand-subtitle">notes, courses, and small tools</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">首页</a>
+        <a href="/#notes">笔记</a>
+        <a href="/friends.html">友站</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="site-shell not-found">
+    <section>
+      <p class="eyebrow">Page Not Found</p>
+      <h1>404</h1>
+      <p class="section-note">这个页面暂时不存在，可能是链接移动了，或者笔记还没有整理到这里。</p>
+      <div class="quick-actions" style="justify-content: center;">
+        <a class="button" href="/">回到首页</a>
+        <a class="button secondary" href="/#notes">浏览笔记</a>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

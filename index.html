@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LH314 · 个人主页</title>
+  <meta name="description" content="LH314 的个人主页、课程笔记与学习资料索引。">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="site-shell nav" aria-label="主导航">
+      <a class="brand" href="/">
+        <span class="brand-title">LH314</span>
+        <span class="brand-subtitle">notes, courses, and small tools</span>
+      </a>
+      <div class="nav-links">
+        <a href="/" aria-current="page">首页</a>
+        <a href="#notes">笔记</a>
+        <a href="#projects">项目</a>
+        <a href="/friends.html">友站</a>
+        <a href="/teaching/index">教学</a>
+        <a href="https://github.com/lh314-pku/lh314-pku.github.io">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="site-shell">
+    <section class="hero" aria-labelledby="home-title">
+      <div>
+        <p class="eyebrow">Personal Site</p>
+        <h1 id="home-title">LH314 的个人主页</h1>
+        <p class="hero-copy">
+          这里整理课程笔记、学习资料、项目页面和一些小工具。主页只做索引和导航，具体内容仍保留在原始 Markdown 与独立页面中，方便维护和下载。
+        </p>
+        <div class="quick-actions">
+          <a class="button" href="#notes">浏览课程笔记</a>
+          <a class="button secondary" href="/Useful_Tools">常用工具</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="站点说明">
+        <p><strong>关于这里</strong></p>
+        <p>
+          这是一个偏学习档案和项目入口的个人站点。笔记内容不会在首页被重新加工，只提供稳定入口，避免破坏原有 Markdown 和图片引用。
+        </p>
+        <a class="text-link" href="https://github.com/lh314-pku/lh314-pku.github.io/tree/main/notes">下载 notes 目录</a>
+      </aside>
+    </section>
+
+    <section class="section" id="notes" aria-labelledby="notes-title">
+      <div class="section-header">
+        <div>
+          <h2 id="notes-title">课程笔记</h2>
+          <p class="section-note">按学期和主题归档。主页只展示入口，具体内容在对应 Markdown 页面中阅读。</p>
+        </div>
+      </div>
+
+      <div class="course-grid">
+        <article class="course-group">
+          <h3>大一下 · 2025 Spring</h3>
+          <ul class="link-list">
+            <li><a href="/notes/IntroOfAI_2025Spring/index">人工智能引论</a></li>
+            <li><a href="/notes/Programming_Internship/index">程序设计实习</a></li>
+          </ul>
+        </article>
+
+        <article class="course-group">
+          <h3>大二上 · 2025 Autumn</h3>
+          <ul class="link-list">
+            <li><a href="/notes/CMU_CSAPP/index">CMU CSAPP</a></li>
+            <li><a href="/notes/ICS/index">PKU ICS</a></li>
+            <li><a href="/notes/CV/index">Computer Vision</a></li>
+            <li><a href="/notes/DSA/index">Data Structure and Algorithm</a></li>
+          </ul>
+        </article>
+
+        <article class="course-group">
+          <h3>大二下 · 2026 Spring</h3>
+          <ul class="link-list">
+            <li><a href="/notes/2026Spring/DAA/index">算法设计与分析</a></li>
+            <li><a href="/notes/2026Spring/Intro_EleGame/index">电子游戏通论</a></li>
+            <li><a href="/notes/2026Spring/LLM&NLG/index">大规模语言模型与自然语言生成</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="section-header">
+        <div>
+          <h2 id="projects-title">Projects</h2>
+          <p class="section-note">独立页面、小工具和临时作品。它们保持自己的目录结构，主页只提供入口。</p>
+        </div>
+      </div>
+
+      <div class="tool-row">
+        <a class="plain-card" href="/OF_wenchun/">
+          <h3>OF Wenchun</h3>
+          <p>独立页面项目，保留原有设计与内容组织。</p>
+        </a>
+        <a class="plain-card" href="/Yanhuo_say_what/">
+          <h3>Yanhuo Say What</h3>
+          <p>独立互动页面入口，不合并到主页样式系统中。</p>
+        </a>
+        <a class="plain-card" href="/parquet.html">
+          <h3>Parquet Viewer</h3>
+          <p>浏览器端查看 Parquet 文件的小工具。</p>
+        </a>
+        <a class="plain-card" href="/pt.html">
+          <h3>PT Viewer</h3>
+          <p>基于 Netron 的模型可视化入口。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="more-title">
+      <div class="section-header">
+        <div>
+          <h2 id="more-title">更多入口</h2>
+          <p class="section-note">辅助文档和课程资料，仍然保留原来的 Markdown 访问路径。</p>
+        </div>
+      </div>
+
+      <div class="tool-row">
+        <a class="plain-card" href="/How_to_use_LATEX">
+          <h3>数学公式</h3>
+          <p>GitHub Pages 渲染 Markdown 与 LaTeX 的配置记录。</p>
+        </a>
+        <a class="plain-card" href="/teaching/index">
+          <h3>教学页面</h3>
+          <p>数学、物理、化学等讲义资料入口。</p>
+        </a>
+        <a class="plain-card" href="/training/index">
+          <h3>培训资料</h3>
+          <p>训练与材料页面入口。</p>
+        </a>
+        <a class="plain-card" href="/Useful_Tools">
+          <h3>常用工具</h3>
+          <p>学习中常用的网站与工具记录。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="friends-title">
+      <div class="section-header">
+        <div>
+          <h2 id="friends-title">友站</h2>
+          <p class="section-note">友链和常用学习资源入口。</p>
+        </div>
+        <a class="text-link" href="/friends.html">查看友站页</a>
+      </div>
+
+      <div class="friend-grid">
+        <article class="friend-card">
+          <p class="meta">学习资源</p>
+          <h3><a href="https://csdiy.wiki/">CS 自学指南</a></h3>
+          <p>体系化的计算机课程自学资料整理，对课程选择和学习路线很有参考价值。</p>
+        </article>
+        <article class="friend-card">
+          <p class="meta">课程工具</p>
+          <h3><a href="https://pku7day.com/">PKU 7 Days</a></h3>
+          <p>课程检索、自习教室查询等实用功能，适合日常校园学习安排。</p>
+        </article>
+        <article class="friend-card placeholder">
+          <p class="meta">Friend Link</p>
+          <h3>欢迎交换友链</h3>
+          <p>可以放站名、链接和一句简介。这里先保留一个安静的空位。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-shell footer-inner">
+      <span>© LH314. Built with plain HTML and Markdown.</span>
+      <span><a href="/README">旧版 Markdown 首页</a></span>
+    </div>
+  </footer>
+</body>
+</html>
