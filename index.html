@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LH314 · 个人主页</title>
   <meta name="description" content="LH314 的个人主页、课程笔记与学习资料索引。">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("lh314-theme");
+        var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (error) {}
+    })();
+  </script>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -24,6 +33,10 @@
         <a href="/teaching/index">教学</a>
         <a href="https://github.com/lh314-pku/lh314-pku.github.io">GitHub</a>
       </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换夜间模式" aria-pressed="false">
+        <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+        <span class="theme-toggle-text">夜间模式</span>
+      </button>
     </nav>
   </header>
 
@@ -184,5 +197,6 @@
       <span><a href="/README">旧版 Markdown 首页</a></span>
     </div>
   </footer>
+  <script src="/theme.js"></script>
 </body>
 </html>

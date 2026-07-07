@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 · 页面不存在</title>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("lh314-theme");
+        var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (error) {}
+    })();
+  </script>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -20,6 +29,10 @@
         <a href="/#notes">笔记</a>
         <a href="/friends.html">资源</a>
       </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换夜间模式" aria-pressed="false">
+        <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+        <span class="theme-toggle-text">夜间模式</span>
+      </button>
     </nav>
   </header>
 
@@ -34,5 +47,6 @@
       </div>
     </section>
   </main>
+  <script src="/theme.js"></script>
 </body>
 </html>
