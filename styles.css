@@ -81,8 +81,19 @@ a:hover {
   flex-direction: column;
   gap: 6px;
   color: var(--sidebar-text);
-  padding-bottom: 24px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--sidebar-line);
+}
+
+.avatar {
+  background: var(--surface);
+  border: 1px solid var(--sidebar-line);
+  border-radius: 50%;
+  display: block;
+  height: 88px;
+  margin-bottom: 10px;
+  object-fit: cover;
+  width: 88px;
 }
 
 .brand-title {
@@ -95,6 +106,15 @@ a:hover {
   color: var(--sidebar-muted);
   font-size: 0.8rem;
   line-height: 1.5;
+}
+
+.profile-note {
+  border-bottom: 1px solid var(--sidebar-line);
+  color: var(--sidebar-muted);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  margin: -18px 0 0;
+  padding: 0 0 22px;
 }
 
 .nav-links {
@@ -415,12 +435,22 @@ body > main.site-shell,
     padding-bottom: 0;
   }
 
+  .avatar {
+    height: 42px;
+    margin-bottom: 4px;
+    width: 42px;
+  }
+
   .brand-title {
     font-size: 1.05rem;
   }
 
   .brand-subtitle {
     color: var(--muted);
+  }
+
+  .profile-note {
+    display: none;
   }
 
   .nav-links {
