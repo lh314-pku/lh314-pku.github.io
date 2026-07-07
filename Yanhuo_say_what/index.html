@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meme 文字生成器</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="workspace" aria-label="Meme 预览">
+      <canvas id="memeCanvas" width="600" height="600"></canvas>
+    </section>
+
+    <aside class="controls" aria-label="编辑控制">
+      <div class="field">
+        <label for="memeText">对话框文字</label>
+        <textarea id="memeText" rows="6" maxlength="120" placeholder="在这里输入文字"></textarea>
+      </div>
+
+      <div class="field-row">
+        <label for="fontSize">字号</label>
+        <input id="fontSize" type="range" min="22" max="58" value="40">
+      </div>
+
+      <div class="field-row">
+        <label for="textColor">颜色</label>
+        <input id="textColor" type="color" value="#111111">
+      </div>
+
+      <div class="actions">
+        <button id="clearButton" type="button">清空</button>
+        <button id="downloadButton" type="button" class="primary">下载图片</button>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
